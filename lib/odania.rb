@@ -31,4 +31,12 @@ module Odania
 			@configured = true
 		end
 	end
+
+	def self.ips
+		ips = []
+		Socket.ip_address_list.each do |address|
+			ip = address.ip_address
+			ips << ip unless %w(127.0.0.1 ::1).include? ip
+		end
+	end
 end
