@@ -25,7 +25,7 @@ module Odania
 			puts "Writing plugin instance config: #{plugin_instance_name}"
 			Diplomat::Kv.put("#{get_plugin_path(plugin_name)}#{plugin_instance_name}", JSON.dump(plugin_config))
 
-			Odania.service.add_service(plugin_name, plugin_instance_name, plugin_config['ip'])
+			Odania.service.register_service(plugin_name, plugin_instance_name, plugin_config['ip'])
 
 			Diplomat::Event.fire('updated_plugin_config', "#{plugin_name}|#{plugin_instance_name}")
 		end

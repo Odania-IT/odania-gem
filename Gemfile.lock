@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    odania (0.0.3)
+    odania (0.0.4)
       diplomat
 
 GEM
