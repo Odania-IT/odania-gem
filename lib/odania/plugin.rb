@@ -39,12 +39,20 @@ module Odania
 
 		# Generate a unique number for this instance of the plugin
 		def get_plugin_instance_name(plugin_name)
-			available_plugins = retrieve_value(get_plugin_path(plugin_name))
+			puts 'Detecting plugin instance name'
+			plugin_instance_name_file = '/tmp/plugin_instance_name'
 
+			plugin_instance_name = nil
+			plugin_instance_name = File.read plugin_instance_name_file if File.exists? plugin_instance_name_file
+			return plugin_instance_name unless plugin_instance_name.nil?
+
+			available_plugins = retrieve_value(get_plugin_path(plugin_name))
 			puts 'Current plugins'
 			puts available_plugins.inspect
 
-			"#{plugin_name}_#{available_plugins.length + 1}"
+			plugin_instance_name = "#{plugin_name}_#{available_plugins.length + 1}"
+			File.write plugin_instance_name_file, plugin_instance_name
+			plugin_instance_name
 		end
 	end
 end
