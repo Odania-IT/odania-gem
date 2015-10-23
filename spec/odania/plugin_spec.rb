@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Odania::Consul do
-	subject { Odania::Consul.new }
+describe Odania::Plugin do
+	subject { Odania::Plugin.new }
 
-	describe '#process' do
-		let(:output) { subject.get_config }
+	describe 'plugins_config' do
+		let(:output) { subject.plugins_config }
 
 		it 'retrieves config' do
 			allow(subject).to receive(:retrieve_value) do |plugin_path|
