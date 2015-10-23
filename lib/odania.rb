@@ -38,5 +38,6 @@ module Odania
 			ip = address.ip_address
 			ips << ip unless %w(127.0.0.1 ::1).include? ip
 		end
+		ips
 	end
 end
