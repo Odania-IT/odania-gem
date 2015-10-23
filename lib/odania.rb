@@ -6,10 +6,10 @@ module Odania
 	autoload :Service, 'odania/service'
 	autoload :Plugin, 'odania/plugin'
 
-	def self.service(consul_url=nil)
+	def self.service
 		if @service.nil?
 			Odania.configure
-			@service = Service.new(consul_url)
+			@service = Service.new
 		end
 		@service
 	end
