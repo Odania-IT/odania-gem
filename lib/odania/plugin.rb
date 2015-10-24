@@ -5,7 +5,11 @@ module Odania
 
 			result = []
 			configs.each do |json_data|
-				result << JSON.parse(json_data[:value])
+				begin
+					result << JSON.parse(json_data[:value])
+				rescue => e
+					puts "Can not parse config: #{e} \n\n #{json_data.inspect}"
+				end
 			end
 
 			result
