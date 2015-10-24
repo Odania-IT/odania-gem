@@ -2,6 +2,8 @@ require 'odania/version'
 require 'diplomat'
 
 module Odania
+	CORE_PLUGIN_NAME = 'odania-core'
+
 	autoload :Consul, 'odania/consul'
 	autoload :Service, 'odania/service'
 	autoload :Plugin, 'odania/plugin'
