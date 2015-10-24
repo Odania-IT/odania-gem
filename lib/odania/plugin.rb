@@ -2,19 +2,12 @@ module Odania
 	class Plugin < Odania::Consul
 		def plugins_config
 			configs = retrieve_value 'plugins'
-			puts
-			puts 'Configs'
-			puts configs.inspect
-			puts
-			puts
 
-			result = {}
+			result = []
 			configs.each do |json_data|
-				config = JSON.parse json_data[:value]
-				# TODO merge
-				puts config.inspect
-				result = config
+				result << JSON.parse(json_data[:value])
 			end
+
 			result
 		end
 
