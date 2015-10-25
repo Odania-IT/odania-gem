@@ -2,6 +2,7 @@ module Odania
 	class Plugin < Odania::Consul
 		def plugins_config
 			configs = retrieve_value 'plugins'
+			configs = [configs] unless configs.kind_of?(Array)
 
 			result = []
 			configs.each do |json_data|
