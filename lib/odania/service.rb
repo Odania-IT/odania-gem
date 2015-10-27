@@ -8,9 +8,9 @@ module Odania
 			end
 		end
 
-		def get(name)
+		def get(name, scope=:first)
 			begin
-				Diplomat::Service.get(name)
+				Diplomat::Service.get(name, scope)
 			rescue Diplomat::PathNotFound => e
 				puts "Service not found: #{e}"
 				puts e.backtrace.inspect
@@ -19,11 +19,16 @@ module Odania
 			end
 		end
 
+		def get_all
+			Diplomat::Service.get_all
+		end
+
 		def consul_service_config(plugin_name, plugin_instance_name, ip, tags=[], port=80)
 			{
 				'id' => plugin_instance_name,
 				'name' => plugin_name,
 				'tags' => tags,
+				'address' => ip,
 				'port' => port,
 				'token' => plugin_instance_name,
 				'checks' => [
