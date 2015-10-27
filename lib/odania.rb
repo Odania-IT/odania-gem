@@ -3,6 +3,7 @@ require 'diplomat'
 
 module Odania
 	CORE_PLUGIN_NAME = 'odania-core'
+	INTERNAL_VARNISH_NAME = 'odania-varnish-internal'
 
 	autoload :Consul, 'odania/consul'
 	autoload :Service, 'odania/service'
@@ -41,5 +42,9 @@ module Odania
 			ips << ip unless %w(127.0.0.1 ::1).include? ip
 		end
 		ips
+	end
+
+	def self.varnish_sanitize(name)
+		name.gsub(/[^0-9a-zA-Z_]/, '_')
 	end
 end
