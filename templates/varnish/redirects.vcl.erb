@@ -1,0 +1,11 @@
+vcl 4.0;
+# generated varnish config: <%= ENVIRONMENT %>
+
+sub vcl_recv {
+	<% redirects.each_pair do |src, target| %>
+	if (req.http.host == "<%= src %>") {
+		set req.http.Location = "<%= target %>";
+		return (synth(750, "Permanently moved"));
+	}
+	<% end %>
+}

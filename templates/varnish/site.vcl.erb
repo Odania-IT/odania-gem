@@ -1,0 +1,50 @@
+<%
+is_first = true
+%>
+vcl 4.0;
+# generated varnish config: <%= ENVIRONMENT %>
+
+sub vcl_recv {
+	std.log("pre varnish log info '<%= domain.name %>':" + req.http.host);
+	if (req.http.host ~ "<%= domain.name %>$") {
+		std.log("varnish log info '<%= domain.name %>':" + req.http.host);
+
+		<% domain.subdomains.each_pair do |subdomain_name, subdomain| %>
+			<%= is_first ? '' : 'else ' %>if (req.http.host ~ "^<%= subdomain.name %>.<%= domain.name %>$") {
+				std.log("subdomain identified '<%= subdomain.name %>.<%= domain.name %>':" + req.http.host + " url: " + req.url );
+
+				<% subdomain.pages.each do |page| %>
+					if (req.url ~ "^<%= page.url %>") {
+						std.log("page identified '<%= subdomain.name %>.<%= domain.name %>' Page:'<%= page.url %>':" + req.url);
+
+						set req.backend_hint = <%= page.director %>.backend();
+						<% unless page.backend_url.nil? %>set req.url = "<%= page.backend_url %>";<% end %>
+					}
+				<% end %>
+
+				<% subdomain.get_redirects.each_pair do |src, target| %>
+					if (req.url ~ "<%= src %>") {
+						std.log("redirect identified '<%= subdomain.name %>.<%= domain.name %>' src:'<%= src %>':" + req.url);
+						set req.http.Location = "<%= target %>";
+						return (synth(750, "Permanently moved"));
+					}
+				<% end %>
+
+			}
+			<% is_first = false %>
+		<% end %>
+
+		else {
+			# Redirect to default
+			std.log("varnish log info 'redirect to default':" + req.url);
+			set req.http.Location = "http://<%= default_subdomain_for(domain) %>.<%= domain.name %>" + req.url;
+			return (synth(750, "Permanently moved"));
+		}
+	}
+}
+
+sub vcl_deliver {
+	if (req.http.host ~ "<%= domain.name %>$") {
+		# What to do?
+	}
+}

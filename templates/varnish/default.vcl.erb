@@ -1,0 +1,16 @@
+vcl 4.0;
+# generated varnish config: <%= ENVIRONMENT %>
+
+sub vcl_synth {
+	if (resp.status == 750) {
+		set resp.http.location = req.http.Location;
+		set resp.status = 301;
+		return (deliver);
+	}
+}
+
+include "/etc/varnish/backend.vcl";
+include "/etc/varnish/general.vcl";
+include "/etc/varnish/redirects.vcl";
+include "/etc/varnish/sites.vcl";
+include "/etc/varnish/catch_all.vcl";

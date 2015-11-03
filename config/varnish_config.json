@@ -1,0 +1,5 @@
+{
+	"name": "odania-varnish",
+	"default": false,
+	"domains": {}
+}

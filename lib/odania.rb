@@ -1,38 +1,35 @@
 require 'odania/version'
 require 'diplomat'
+require 'erubis'
+require 'fileutils'
+require 'uri/http'
+require 'public_suffix'
+
+BASE_DIR = File.absolute_path File.join File.dirname(__FILE__), '..'
+ENVIRONMENT = ENV['ENVIRONMENT'].nil? ? 'development' : ENV['ENVIRONMENT']
 
 module Odania
 	CORE_PLUGIN_NAME = 'odania-core'
-	INTERNAL_VARNISH_NAME = 'odania-varnish-internal'
 
 	autoload :Consul, 'odania/consul'
-	autoload :Service, 'odania/service'
 	autoload :Plugin, 'odania/plugin'
-
-	def self.service
-		if @service.nil?
-			Odania.configure
-			@service = Service.new
-		end
-		@service
-	end
+	autoload :Template, 'odania/template'
+	autoload :Varnish, 'odania/varnish'
 
 	def self.plugin
 		Odania.configure
-		@plugin = Plugin.new if @plugin.nil?
+		@plugin = Plugin.new(@consul) if @plugin.nil?
 		@plugin
 	end
 
+	def self.varnish
+		@varnish = Varnish.new if @varnish.nil?
+		@varnish
+	end
+
 	def self.configure(consul_url=nil)
-		if @configured.nil?
-			consul_url = "http://#{ENV['CONSUL_PORT_8500_TCP_ADDR']}:#{ENV['CONSUL_PORT_8500_TCP_PORT']}" if consul_url.nil?
-			puts "Consul URL: #{consul_url}"
-			Diplomat.configure do |config|
-				# Set up a custom Consul URL
-				config.url = consul_url
-			end
-			@configured = true
-		end
+		@consul = Consul.new(consul_url) if @consul.nil?
+		$debug = false
 	end
 
 	def self.ips

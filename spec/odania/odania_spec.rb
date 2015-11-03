@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Odania do
 
 	describe 'odania' do

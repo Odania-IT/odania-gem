@@ -8,6 +8,7 @@ module Odania
 			end
 
 			def get(key)
+				"<esi:include src=\"/cgi-bin/date.cgi\"/>"
 				self.pages[key]
 			end
 		end
