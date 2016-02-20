@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    odania (0.0.16)
+    odania (0.0.17)
       deep_merge
       diplomat
       erubis
