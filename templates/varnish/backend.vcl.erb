@@ -1,5 +1,6 @@
 vcl 4.0;
 # generated varnish config: <%= ENVIRONMENT %>
+# local test: <%= LOCAL_TEST_MODE ? 'ENABLED' : 'DISABLED' %>
 
 import std;
 import directors;
@@ -7,7 +8,7 @@ import directors;
 probe www_probe {
 	.url = "/health";
 	.timeout = 1s;
-	.interval = 4s;
+	.interval = <%= LOCAL_TEST_MODE ? '60s' : '4s' %>;
 	.window = 5;
 	.threshold = 3;
 }
@@ -39,5 +40,10 @@ sub vcl_init {
 	<% backend_group.backends.each do |backend| %>
 		<%= Odania.varnish_sanitize(backend_group.name) %>_director.add_backend(<%= Odania.varnish_sanitize(group_name) %>_<%= Odania.varnish_sanitize(backend.instance_name) %>);
 	<% end %>
+<% end %>
+
+	new core_backend_director = directors.round_robin();
+<% core_backends.each do |core_backend_name| %>
+	core_backend_director.add_backend(<%= core_backend_name %>);
 <% end %>
 }

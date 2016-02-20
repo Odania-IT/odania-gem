@@ -1,5 +1,5 @@
 module Odania
-	module PluginConfig
+	module Config
 		class Backend
 			attr_accessor :service_name, :instance_name, :host, :port
 

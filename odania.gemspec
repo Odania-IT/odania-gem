@@ -22,8 +22,11 @@ Gem::Specification.new do |spec|
 	spec.add_development_dependency 'rake'
 	spec.add_development_dependency 'rspec'
 	spec.add_development_dependency 'cucumber'
+	spec.add_development_dependency 'guard'
+	spec.add_development_dependency 'guard-rspec'
 
 	spec.add_dependency 'diplomat'
 	spec.add_dependency 'erubis'
 	spec.add_dependency 'public_suffix'
+	spec.add_dependency 'deep_merge'
 end

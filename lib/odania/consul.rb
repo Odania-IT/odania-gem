@@ -1,6 +1,6 @@
 module Odania
 	class Consul
-		attr_accessor :service, :config, :event, :health
+		attr_reader :service, :config, :event, :health
 
 		def initialize(consul_url)
 			consul_url = "http://#{ENV['CONSUL_PORT_8500_TCP_ADDR']}:#{ENV['CONSUL_PORT_8500_TCP_PORT']}" if consul_url.nil?
@@ -63,7 +63,11 @@ module Odania
 			end
 
 			def get_all_for(plugin_name)
-				instances = get(plugin_name, :all)
+				begin
+					instances = get(plugin_name, :all)
+				rescue
+					instances = []
+				end
 				instances.is_a?(Array) ? instances : [instances]
 			end
 

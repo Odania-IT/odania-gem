@@ -1,26 +1,25 @@
-require_relative 'plugin_config/plugin_config'
-
 module Odania
 	class Plugin
 		INSTANCE_FILES_PATH = '/tmp/plugin_instance_name_'
 
 		def initialize(consul)
 			@consul = consul
-			@plugin_config = PluginConfig::Base.new
+			@plugin_config = Config::GlobalConfig.new
 		end
 
 		def register(plugin_instance_name, plugin_config)
-			plugin_name = plugin_config['name']
+			plugin_name = plugin_config['plugin-config']['name']
 
 			# Write configuration of the plugin
 			@consul.config.set(get_plugin_config_path_for(plugin_name), plugin_config)
 
 			# Register service
-			consul_config = @consul.service.build_config(plugin_name, plugin_instance_name, plugin_config['ip'], plugin_config['tags'], plugin_config['port'])
+			consul_config = @consul.service.build_config(plugin_name, plugin_instance_name, plugin_config['plugin-config']['ip'], plugin_config['plugin-config']['tags'], plugin_config['plugin-config']['port'])
 			@consul.service.register(consul_config)
 
 			# Fire event
 			@consul.event.fire 'service-registered', "#{plugin_name}|#{plugin_instance_name}"
+			"#{plugin_name}|#{plugin_instance_name}"
 		end
 
 		def deregister(plugin_instance_name)
@@ -59,6 +58,14 @@ module Odania
 
 		def get_global_config
 			@consul.config.get get_global_plugin_config_path
+		end
+
+		def get_domain_config_for(domain, global_config=nil)
+			global_config = get_global_config if global_config.nil?
+
+			domain_info = PublicSuffix.parse(domain)
+			return global_config['domains'][domain_info.domain], domain unless global_config['domains'][domain_info.domain].nil?
+			return false, nil
 		end
 
 		def health

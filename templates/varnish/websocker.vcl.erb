@@ -1,5 +1,6 @@
 vcl 4.0;
 # generated varnish config: <%= ENVIRONMENT %>
+# local test: <%= LOCAL_TEST_MODE ? 'ENABLED' : 'DISABLED' %>
 # https://www.varnish-cache.org/docs/4.0/users-guide/vcl-example-websockets.html
 
 sub vcl_pipe {

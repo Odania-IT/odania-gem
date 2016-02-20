@@ -1,0 +1,142 @@
+{
+	"config": {
+		"title": "This is my awesome title",
+		"default_backend_groups": [
+			"odania-static"
+		]
+	},
+	"plugin-config": {
+		"odania-static": {
+			"name": "odania-core",
+			"default": true,
+			"author": [
+				"Mike Petersen <mike@odania-it.com>"
+			],
+			"url": "http://www.odania.com",
+			"sites": [
+				"www.domain.de"
+			]
+		}
+	},
+	"default_subdomains": {
+		"_general": "www"
+	},
+	"domains": {
+		"_general": {
+			"_general": {
+				"config": {
+				},
+				"redirects": {
+					"odania.com$": "www.odania.com",
+					"odania.de$": "www.odania.com/de"
+				},
+				"internal": {
+					"layouts": {
+					},
+					"partials": {
+					}
+				}
+			}
+		},
+		"example.com": {
+			"_general": {
+				"config": {
+				},
+				"direct": {
+					"/imprint": {
+						"group_name": "static-content",
+						"plugin_url": "/contents/my-awesome-imprint"
+					}
+				},
+				"internal": {
+					"layouts": {
+					},
+					"partials": {
+					}
+				}
+			},
+			"www": {
+				"dynamic": {
+					"/de/openhab/2015-09-17-testing-openhab2": {
+						"group_name": "static-content",
+						"plugin_url": "/contents/www.example.com/web/de/openhab/2015-09-17-testing-openhab2.html",
+						"cacheable": true,
+						"expires": 60
+					},
+					"/de": {
+						"group_name": "static-content",
+						"plugin_url": "/contents/www.example.com/web/de/index.html"
+					}
+				},
+				"direct": {
+					"/favicon.ico": {
+						"group_name": "odania-core",
+						"plugin_url": "/admin/favicon.ico"
+					},
+					"/assets/admin/js/admin.js": {
+						"group_name": "odania-core",
+						"plugin_url": "/assets/admin/js/admin.js"
+					},
+					"hamster.jpeg": {
+						"group_name": "static-content",
+						"plugin_url": "/contents/www.example.com/assets/hamster.jpeg"
+					},
+					"imprint": {
+						"group_name": "static-content",
+						"plugin_url": "/contents/my-special-imprint"
+					}
+				},
+				"internal": {
+					"layouts": {
+						"main": {
+							"styles": {
+								"_general": {
+									"entry_point": "application.html.erb",
+									"direct": {
+										"layouts/mac-beath/img/favicon/favicon.png": {
+											"group_name": "static-content",
+											"plugin_url": "layouts/mac-beath/img/favicon/favicon.png",
+											"cacheable": true,
+											"expires": 60
+										},
+										"layouts/mac-beath/img/photos/t12.jpg": {
+											"group_name": "static-content",
+											"plugin_url": "layouts/mac-beath/img/photos/t12.jpg"
+										}
+									},
+									"dynamic": {
+										"layouts/simple/application_part1.html": {
+											"group_name": "static-content",
+											"plugin_url": "layouts/simple/application_part1.html.erb",
+											"cacheable": true,
+											"expires": 60
+										}
+									}
+								},
+								"left_menu": {
+									"entry_point": "application.html.erb",
+									"direct": {},
+									"dynamic": {}
+								}
+							}
+						}
+					},
+					"partials": {
+						"footer": {
+							"name": "footer",
+							"group_name": "static-content",
+							"plugin_url": "partials/footer.html",
+							"cacheable": true,
+							"expires": 60
+						},
+						"tracking": {
+							"name": "tracking",
+							"group_name": "static-content",
+							"plugin_url": "partials/tracking.html"
+						}
+					}
+				}
+			}
+		}
+	}
+}

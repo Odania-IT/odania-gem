@@ -1,10 +1,10 @@
 vcl 4.0;
 # generated varnish config: <%= ENVIRONMENT %>
+# local test: <%= LOCAL_TEST_MODE ? 'ENABLED' : 'DISABLED' %>
 
 # @see https://www.varnish-cache.org/lists/pipermail/varnish-misc/2011-January/005449.html
 
 # Sites
 <% domains.each_pair do |domain_name, domain| %>
 include "/etc/varnish/sites/<%= domain_name %>.vcl";
-include "/etc/varnish/sites/<%= domain_name %>_assets.vcl";
 <% end %>

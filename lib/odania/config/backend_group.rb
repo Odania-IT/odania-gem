@@ -1,15 +1,20 @@
 module Odania
-	module PluginConfig
+	module Config
 		class BackendGroup
-			attr_accessor :name, :backends
+			attr_accessor :name, :backends, :core_backend
 
 			def initialize(name, backends=[])
 				self.name = name
+				self.core_backend = false
 				self.backends = backends
 			end
 
 			def add_backend(backend)
 				self.backends << backend
+			end
+
+			def check_core_backend(tags)
+				self.core_backend = tags.include?('core-backend')
 			end
 
 			def dump

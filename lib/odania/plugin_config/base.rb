@@ -1,25 +1,20 @@
 # Generate a joined configuration for all available plugins
 
+require_relative 'duplicates'
 require_relative 'models/backend'
 require_relative 'models/backend_group'
 require_relative 'models/domain'
 require_relative 'models/layout'
 require_relative 'models/page'
+require_relative 'models/partial'
 require_relative 'models/redirect'
 require_relative 'models/sub_domain'
 
 module Odania
 	module PluginConfig
-		class Base
+		class Base22
 			def initialize
-				@default_backend_groups = []
-				@backend_groups = Hash.new { |hash, key| hash[key] = BackendGroup.new(key) }
-				@redirects = Hash.new { |hash, key| hash[key] = Redirect.new(key) }
-				@domains = Hash.new { |hash, key| hash[key] = Domain.new(key) }
-				@default_subdomains = {}
-				@layouts = Hash.new { |hash, key| hash[key] = Layout.new }
-
-				@duplicates = Duplicates.new
+				reset
 			end
 
 			def load_from_consul
@@ -53,6 +48,7 @@ module Odania
 					end
 				end
 
+
 				unless config['redirects'].nil?
 					config['redirects'].each_pair do |src, target|
 						@redirects[src].target = target
@@ -68,6 +64,12 @@ module Odania
 				unless config['layouts'].nil?
 					config['layouts'].each_pair do |name, data|
 						@layouts[name].load(data)
+					end
+				end
+
+				unless config['partials'].nil?
+					config['partials'].each_pair do |name, data|
+						@partials[name].load(data)
 					end
 				end
 
@@ -140,6 +142,14 @@ module Odania
 					end
 				end
 
+				unless config['partials'].nil?
+					config['partials'].each_pair do |name, partial_file|
+						unless @partials[name].load(name, partial_file, group_name)
+							@duplicates.add(group_name, :partial, name, @partials[name].plugins)
+						end
+					end
+				end
+
 				@default_subdomains = config['default_subdomains'] unless config['default_subdomains'].nil?
 			end
 
@@ -163,7 +173,8 @@ module Odania
 					'backends' => {},
 					'redirects' => {},
 					'domains' => {},
-					'layouts' => {}
+					'layouts' => {},
+					'partials' => {}
 				}
 
 				@backend_groups.each_pair do |group_name, instance|
@@ -180,6 +191,10 @@ module Odania
 
 				@layouts.each_pair do |name, layout|
 					config['layouts'][name] = layout.dump
+				end
+
+				@partials.each_pair do |name, partial|
+					config['partials'][name] = partial.dump
 				end
 
 				puts JSON.pretty_generate config if $debug
@@ -218,29 +233,9 @@ module Odania
 				@domains = Hash.new { |hash, key| hash[key] = Domain.new(key) }
 				@default_subdomains = {}
 				@layouts = Hash.new { |hash, key| hash[key] = Layout.new }
+				@partials = Hash.new { |hash, key| hash[key] = Partial.new }
 
 				@duplicates = Duplicates.new
-			end
-		end
-
-		class Duplicates
-			def initialize
-				@duplicates = Hash.new { |hash, key| hash[key] = Hash.new { |hash, key| hash[key] = Duplicate.new } }
-			end
-
-			def add(group, type, key, plugin_info)
-				@duplicates[group][type].add(key, plugin_info)
-			end
-
-			class Duplicate
-				def initialize
-					@duplicate = {}
-				end
-
-				def add(key, plugin_info)
-					@duplicate[key] = [] if @duplicate[key].nil?
-					@duplicate[key] += plugin_info
-				end
 			end
 		end
 	end

@@ -9,16 +9,16 @@ module Odania
 	class Varnish
 		def generate(out_dir='/etc/varnish')
 			FileUtils.mkdir_p out_dir unless File.directory? out_dir
-			global_config = Odania.plugin.get_global_config
-			plugin_config = Odania.plugin.plugin_config.load_global_config global_config
+			global_config_json = Odania.plugin.get_global_config
+			global_config = Odania.plugin.plugin_config.load_global_config global_config_json
 
 			# Backend config
-			backend_groups = plugin_config.backend_groups
-			default_backend = plugin_config.default_backend
+			backend_groups = global_config.backend_groups
+			default_backend = global_config.default_backend
 
 			# Domain information config
-			domains = plugin_config.domains
-			default_subdomains = plugin_config.default_subdomains
+			domains = global_config.domains
+			default_subdomains = global_config.default_subdomains
 
 			# Generate catch all vcl
 			gen = GenerateCatchAllVcl.new
@@ -37,7 +37,7 @@ module Odania
 			gen.write(out_dir)
 
 			# Generate global redirects
-			gen = GenerateRedirectsVcl.new(plugin_config.redirects)
+			gen = GenerateRedirectsVcl.new(global_config.default_redirects)
 			gen.write(out_dir)
 
 			# Generate main vcl
@@ -47,7 +47,6 @@ module Odania
 			puts
 			puts 'Registering internal varnish plugin'
 			register_plugin
-			puts
 		end
 
 		 def reload_config
@@ -71,10 +70,10 @@ module Odania
 			plugin_config = JSON.parse File.read "#{BASE_DIR}/config/varnish_config.json"
 
 			ips = Odania.ips
-			plugin_config['ips'] = ips
-			plugin_config['ip'] = ips.first
-			plugin_config['port'] = 80
-			plugin_config['tags'] = ["plugin-#{get_plugin_name}"]
+			plugin_config['plugin-config']['ips'] = ips
+			plugin_config['plugin-config']['ip'] = ips.first
+			plugin_config['plugin-config']['port'] = 80
+			plugin_config['plugin-config']['tags'] = ["plugin-#{get_plugin_name}"]
 			puts JSON.pretty_generate plugin_config if $debug
 
 			plugin_instance_name = Odania.plugin.get_plugin_instance_name get_plugin_name

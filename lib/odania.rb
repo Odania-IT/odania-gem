@@ -4,16 +4,21 @@ require 'erubis'
 require 'fileutils'
 require 'uri/http'
 require 'public_suffix'
+require 'deep_merge'
+require 'json'
+require 'socket'
 
 BASE_DIR = File.absolute_path File.join File.dirname(__FILE__), '..'
 ENVIRONMENT = ENV['ENVIRONMENT'].nil? ? 'development' : ENV['ENVIRONMENT']
+LOCAL_TEST_MODE = 'development'.eql?(ENVIRONMENT)
 
 module Odania
 	CORE_PLUGIN_NAME = 'odania-core'
 
+	autoload :Config, 'odania/config'
 	autoload :Consul, 'odania/consul'
+	autoload :Erb, 'odania/erb'
 	autoload :Plugin, 'odania/plugin'
-	autoload :Template, 'odania/template'
 	autoload :Varnish, 'odania/varnish'
 
 	def self.plugin
@@ -42,6 +47,7 @@ module Odania
 	end
 
 	def self.varnish_sanitize(name)
+		raise 'Could not sanitize varnish name!!' if name.nil?
 		name.gsub(/[^0-9a-zA-Z_]/, '_')
 	end
 end

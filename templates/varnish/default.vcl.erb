@@ -1,5 +1,6 @@
 vcl 4.0;
 # generated varnish config: <%= ENVIRONMENT %>
+# local test: <%= LOCAL_TEST_MODE ? 'ENABLED' : 'DISABLED' %>
 
 sub vcl_synth {
 	if (resp.status == 750) {

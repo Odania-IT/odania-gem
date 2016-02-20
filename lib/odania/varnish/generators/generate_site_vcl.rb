@@ -8,10 +8,26 @@ module Odania
 			'www'
 		end
 
+		def template_url_for(domain, page)
+			"&domain=#{domain.name}"+
+			"&plugin_url=#{page.plugin_url.nil? ? '/' : page.plugin_url}"+
+			"&group_name=#{Odania.varnish_sanitize(page.group_name)}"
+		end
+
+		def prepare_url(url)
+			return "/#{url}" unless '/'.eql? url[0]
+			url
+		end
+
+		def general_subdomain
+			self.domain['_general']
+		end
+
 		def initialize(domain, default_subdomains)
 			self.domain = domain
 			self.default_subdomains = default_subdomains
 			self.template = File.new("#{BASE_DIR}/templates/varnish/site.vcl.erb").read
+			self.template = File.new("#{BASE_DIR}/templates/varnish/general_site.vcl.erb").read if '_general'.eql? domain.name
 		end
 
 		def render

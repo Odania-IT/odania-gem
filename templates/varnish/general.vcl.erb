@@ -3,11 +3,27 @@
 %>
 vcl 4.0;
 # generated varnish config: <%= ENVIRONMENT %>
+# local test: <%= LOCAL_TEST_MODE ? 'ENABLED' : 'DISABLED' %>
 
 ### Called when a client request is received
 sub vcl_recv {
+	## Internal requests for content/partials
+	## we use internal.core to not have this part open to public
+	if (req.http.host ~ "^internal.core$") {
+		if (req.url ~ "^/template/content") {
+			std.log("template content identified! Page:" + req.url);
+			set req.backend_hint = core_backend_director.backend();
+			return (hash);
+		} else if (req.url ~ "^/template/partial") {
+			std.log("template partial identified! Page:" + req.url);
+			set req.backend_hint = core_backend_director.backend();
+			return (hash);
+		}
+	}
+
 	### always cache these items:
 
+	# varnish is alive. Get health state from core plugin.
 	if (req.url ~ "^/health$") {
 		return (hash);
 	}
@@ -17,25 +33,25 @@ sub vcl_recv {
 	#}
 
 	## images
-	if (req.method == "GET" && req.url ~ "\.(gif|jpg|jpeg|bmp|png|tiff|tif|ico|img|tga|wmf)$") {
-		return (hash);
-	}
+	#if (req.method == "GET" && req.url ~ "\.(gif|jpg|jpeg|bmp|png|tiff|tif|ico|img|tga|wmf)$") {
+	#	return (hash);
+	#}
 
 	## various other content pages
-	if (req.method == "GET" && req.url ~ "\.(css)$") {
-		return (hash);
-	}
+	#if (req.method == "GET" && req.url ~ "\.(css)$") {
+	#	return (hash);
+	#}
 
 	## multimedia
-	if (req.method == "GET" && req.url ~ "\.(svg|swf|ico|mp3|mp4|m4a|ogg|mov|avi|wmv)$") {
-		return (hash);
-	}
+	#if (req.method == "GET" && req.url ~ "\.(svg|swf|ico|mp3|mp4|m4a|ogg|mov|avi|wmv)$") {
+	#	return (hash);
+	#}
 
 	## xml
 
-	if (req.method == "GET" && req.url ~ "\.(xml)$") {
-		return (hash);
-	}
+	#if (req.method == "GET" && req.url ~ "\.(xml)$") {
+	#	return (hash);
+	#}
 }
 
 ### Called when the requested object has been retrieved from the backend, or the request to the backend has failed
@@ -73,7 +89,7 @@ sub vcl_backend_response {
 	set beresp.do_esi = true;
 	set beresp.grace = 6h;
 
-	<% unless ENVIRONMENT.eql?('production') %>
+	<% if LOCAL_TEST_MODE %>
 	set beresp.ttl = 1s;
 	<% end %>
 }
