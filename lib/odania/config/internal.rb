@@ -9,7 +9,7 @@ module Odania
 
 			def assets
 				result = {}
-				self.layouts.each_pair do |name, layout|
+				self.layouts.each_pair do |_name, layout|
 					layout.assets.each_pair do |key, val|
 						result[key] = val
 					end
@@ -20,14 +20,14 @@ module Odania
 			def load(data, group_name)
 				reset
 				unless data['partials'].nil?
-					data['partials'].each_pair do |name, data|
-						self.partials[name].load(data)
+					data['partials'].each_pair do |name, partial_data|
+						self.partials[name].load(partial_data)
 					end
 				end
 
 				unless data['layouts'].nil?
-					data['layouts'].each_pair do |name, data|
-						self.layouts[name].load(data, group_name)
+					data['layouts'].each_pair do |name, layout_data|
+						self.layouts[name].load(layout_data, group_name)
 					end
 				end
 			end

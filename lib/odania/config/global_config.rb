@@ -15,7 +15,7 @@ module Odania
 				end
 
 				# load backends from consul
-				Odania.plugin.get_all.each_pair do |name, instances|
+				Odania.plugin.get_all.each_pair do |_name, instances|
 					instances.each do |instance|
 						add_backend(instance)
 					end
@@ -87,7 +87,7 @@ module Odania
 
 				# Add config
 				unless config_section.nil?
-					config_section.each_pair do |key, val|
+					config_section.each_pair do |key, _val|
 						unless @config[key].nil?
 							@duplicates.add :config, {key => 'already defined'}, group_name
 						end

@@ -33,8 +33,8 @@ module Odania
 				self.name = data['name']
 
 				unless data['backends'].nil?
-					data['backends'].each do |data|
-						self.backends << Backend.new.load(data)
+					data['backends'].each do |backend_data|
+						self.backends << Backend.new.load(backend_data)
 					end
 				end
 			end

@@ -14,8 +14,8 @@ module Odania
 				@plugin_config = data['plugin-config'] unless data['plugin-config'].nil?
 				@default_subdomains = data['default_subdomains'] unless data['default_subdomains'].nil?
 				unless data['domains'].nil?
-					data['domains'].each_pair do |name, data|
-						@domains[name].load(data)
+					data['domains'].each_pair do |name, domain_data|
+						@domains[name].load(domain_data)
 					end
 				end
 

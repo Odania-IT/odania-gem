@@ -39,7 +39,7 @@ module Odania
 			plugin_instance_name_file = "#{INSTANCE_FILES_PATH}#{plugin_name}"
 
 			plugin_instance_name = nil
-			plugin_instance_name = File.read plugin_instance_name_file if File.exists? plugin_instance_name_file
+			plugin_instance_name = File.read plugin_instance_name_file if File.exist? plugin_instance_name_file
 			return plugin_instance_name unless plugin_instance_name.nil?
 
 			available_instances = @consul.service.get_all_for plugin_name

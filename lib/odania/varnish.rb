@@ -52,7 +52,7 @@ module Odania
 		 def reload_config
 			 puts 'Updating varnish config'
 			 current_number = 0
-			 current_number = File.read('/tmp/current_varnish_config_number').to_i if File.exists? '/tmp/current_varnish_config_number'
+			 current_number = File.read('/tmp/current_varnish_config_number').to_i if File.exist? '/tmp/current_varnish_config_number'
 			 current_number += 1
 			 File.write '/tmp/current_varnish_config_number', current_number
 

@@ -55,7 +55,7 @@ module Odania
 		class Service
 			def get_all
 				services = {}
-				Diplomat::Service.get_all.each_pair do |key, value|
+				Diplomat::Service.get_all.each_pair do |key, _value|
 					services[key.to_s] = get_all_for(key)
 				end
 				puts "SERVICES: #{JSON.pretty_generate services}" if $debug

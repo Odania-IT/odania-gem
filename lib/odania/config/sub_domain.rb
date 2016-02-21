@@ -74,16 +74,16 @@ module Odania
 				duplicates = Hash.new { |hash, key| hash[key] = [] }
 
 				unless data['direct'].nil?
-					data['direct'].each_pair do |name, data|
+					data['direct'].each_pair do |name, direct_data|
 						duplicates[:direct] << name if self.direct.key? name
-						self.direct[name].load(data, group_name)
+						self.direct[name].load(direct_data, group_name)
 					end
 				end
 
 				unless data['dynamic'].nil?
-					data['dynamic'].each_pair do |name, data|
+					data['dynamic'].each_pair do |name, dynamic_data|
 						duplicates[:dynamic] << name if self.direct.key? name
-						self.dynamic[name].load(data, group_name)
+						self.dynamic[name].load(dynamic_data, group_name)
 					end
 				end
 
