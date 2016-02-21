@@ -1,6 +1,6 @@
 module Odania
 	module Config
-		class SubDomain < DirectBase
+		class SubDomain < PageBase
 			attr_accessor :name, :config, :dynamic, :internal, :from_plugin, :redirects
 
 			def initialize(name)
@@ -45,18 +45,12 @@ module Odania
 			end
 
 			def dump
-				dynamic_data = {}
-				dynamic.each_pair do |web_url, page|
-					dynamic_data[web_url] = page.dump
-				end
+				result = super
 
-				{
-					'redirects' => self.redirects,
-					'config' => self.config,
-					'direct' => dump_direct_data,
-					'dynamic' => dynamic_data,
-					'internal' => self.internal.dump
-				}
+				result['redirects'] = self.redirects
+				result['config'] = self.config
+				result['internal'] = self.internal.dump
+				result
 			end
 
 			def load(data)
@@ -66,22 +60,9 @@ module Odania
 			end
 
 			def add(data, group_name=nil)
+				duplicates = super(data, group_name)
+
 				self.config = data['config'] unless data['config'].nil?
-				duplicates = Hash.new { |hash, key| hash[key] = [] }
-
-				unless data['direct'].nil?
-					data['direct'].each_pair do |name, direct_data|
-						duplicates[:direct] << name if self.direct.key? name
-						self.direct[name].load(direct_data, group_name)
-					end
-				end
-
-				unless data['dynamic'].nil?
-					data['dynamic'].each_pair do |name, dynamic_data|
-						duplicates[:dynamic] << name if self.direct.key? name
-						self.dynamic[name].load(dynamic_data, group_name)
-					end
-				end
 
 				self.internal.load(data['internal'], group_name) unless data['internal'].nil?
 				unless data['redirects'].nil?
@@ -94,21 +75,14 @@ module Odania
 				duplicates
 			end
 
-			def [](type)
-				return self.direct if 'direct'.eql? type.to_s
-				self.dynamic
-			end
-
 			private
 
 			def reset
 				super
 				self.config = {}
 				self.from_plugin = {:config => Hash.new { |hash, key| hash[key] = [] }}
-				self.dynamic = Hash.new { |hash, key| hash[key] = Page.new }
 				self.redirects = {}
 				self.internal = Internal.new
-				@plugins = {:direct => Hash.new { |hash, key| hash[key] = [] }, :dynamic => Hash.new { |hash, key| hash[key] = [] }}
 			end
 		end
 	end
