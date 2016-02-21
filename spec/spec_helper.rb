@@ -1,5 +1,8 @@
 ENV['ENVIRONMENT'] = 'test'
 
+require 'codeclimate-test-reporter'
+CodeClimate::TestReporter.start
+
 require 'odania'
 require_relative 'support/consul_mock'
 
