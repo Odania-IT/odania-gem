@@ -45,12 +45,14 @@
 											"cacheable": true,
 											"expires": 60
 										}
-									}
+									},
+									"assets": {}
 								},
 								"left_menu": {
 									"entry_point": "application.html.erb",
 									"direct": {},
-									"dynamic": {}
+									"dynamic": {},
+									"assets": {}
 								}
 							}
 						}
