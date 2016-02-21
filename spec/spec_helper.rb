@@ -11,7 +11,6 @@ RSpec.configure do |config|
 	config.before(:each) do
 		$consul_mock = ConsulMock.new
 
-
 		allow(Odania).to receive(:plugin) do
 			Odania::Plugin.new($consul_mock)
 		end

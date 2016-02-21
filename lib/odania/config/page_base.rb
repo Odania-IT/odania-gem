@@ -26,17 +26,7 @@ module Odania
 			end
 
 			def load(data, group_name)
-				unless data['direct'].nil?
-					data['direct'].each_pair do |name, direct_data|
-						self.direct[name].load(direct_data, group_name)
-					end
-				end
-
-				unless data['dynamic'].nil?
-					data['dynamic'].each_pair do |name, dynamic_data|
-						self.dynamic[name].load(dynamic_data, group_name)
-					end
-				end
+				self.add(data, group_name)
 			end
 
 			def reset
@@ -56,7 +46,6 @@ module Odania
 				direct.each_pair do |web_url, page|
 					direct_data[web_url] = page.dump
 				end
-				direct_data
 
 				dynamic_data = {}
 				dynamic.each_pair do |web_url, page|
