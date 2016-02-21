@@ -16,3 +16,6 @@ notifications:
   email: true
 script:
   - bundle exec rake
+addons:
+  code_climate:
+    repo_token: 2b335554fb7a1f2c6b00f37eebda596c8b10fcd1717a8ee55dd449b60a21ac11

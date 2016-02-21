@@ -20,6 +20,8 @@ Or install it yourself as:
 
 TODO: Write usage instructions here
 
+This is used for creating several configurations required by Odania Portal.
+
 ## Contributing
 
 1. Fork it ( https://github.com/Odania-IT/odania-gem/fork )
