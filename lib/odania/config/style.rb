@@ -41,20 +41,20 @@ module Odania
 				self.entry_point = data['entry_point'] unless data['entry_point'].nil?
 
 				unless data['direct'].nil?
-					data['direct'].each_pair do |name, data|
-						self.direct[name].load(data, group_name)
+					data['direct'].each_pair do |name, direct_data|
+						self.direct[name].load(direct_data, group_name)
 					end
 				end
 
 				unless data['dynamic'].nil?
-					data['dynamic'].each_pair do |name, data|
-						self.dynamic[name].load(data, group_name)
+					data['dynamic'].each_pair do |name, dynamic_data|
+						self.dynamic[name].load(dynamic_data, group_name)
 					end
 				end
 
 				unless data['assets'].nil?
-					data['assets'].each_pair do |name, data|
-						self.assets[name].load(data, group_name)
+					data['assets'].each_pair do |name, asset_data|
+						self.assets[name].load(asset_data, group_name)
 					end
 				end
 			end
