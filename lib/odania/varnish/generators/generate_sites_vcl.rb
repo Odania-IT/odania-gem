@@ -1,4 +1,5 @@
 require_relative 'generate_site_vcl'
+require_relative 'generate_site_assets_vcl'
 
 module Odania
 	class GenerateSitesVcl
@@ -20,6 +21,9 @@ module Odania
 			Dir.mkdir "#{out_dir}/sites" unless File.directory? "#{out_dir}/sites"
 			self.domains.each_pair do |domain_name, domain|
 				out = GenerateSiteVcl.new(domain, default_subdomains)
+				out.write out_dir
+
+				out = GenerateSiteAssetsVcl.new(domain, default_subdomains)
 				out.write out_dir
 			end
 		end

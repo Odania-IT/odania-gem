@@ -17,7 +17,6 @@ module Odania
 
 	autoload :Config, 'odania/config'
 	autoload :Consul, 'odania/consul'
-	autoload :Erb, 'odania/erb'
 	autoload :Plugin, 'odania/plugin'
 	autoload :Varnish, 'odania/varnish'
 

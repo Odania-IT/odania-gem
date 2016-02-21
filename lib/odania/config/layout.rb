@@ -7,6 +7,11 @@ module Odania
 				reset
 			end
 
+			def assets
+				return {} if self.styles['_general'].nil? or self.styles['_general'].assets.nil?
+				self.styles['_general'].assets
+			end
+
 			def dump
 				style_data = {}
 				styles.each_pair do |name, style|
@@ -18,11 +23,11 @@ module Odania
 				result
 			end
 
-			def load(data)
+			def load(data, group_name)
 				reset
 				unless data['styles'].nil?
 					data['styles'].each_pair do |key, val|
-						self.styles[key].load(val)
+						self.styles[key].load(val, group_name)
 					end
 				end
 			end

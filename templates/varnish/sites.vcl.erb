@@ -6,5 +6,6 @@ vcl 4.0;
 
 # Sites
 <% domains.each_pair do |domain_name, domain| %>
+include "/etc/varnish/sites/<%= domain_name %>_assets.vcl";
 include "/etc/varnish/sites/<%= domain_name %>.vcl";
 <% end %>

@@ -7,7 +7,17 @@ module Odania
 				reset
 			end
 
-			def load(data)
+			def assets
+				result = {}
+				self.layouts.each_pair do |name, layout|
+					layout.assets.each_pair do |key, val|
+						result[key] = val
+					end
+				end
+				result
+			end
+
+			def load(data, group_name)
 				reset
 				unless data['partials'].nil?
 					data['partials'].each_pair do |name, data|
@@ -17,7 +27,7 @@ module Odania
 
 				unless data['layouts'].nil?
 					data['layouts'].each_pair do |name, data|
-						self.layouts[name].load(data)
+						self.layouts[name].load(data, group_name)
 					end
 				end
 			end

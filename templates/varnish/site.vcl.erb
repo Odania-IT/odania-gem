@@ -10,7 +10,8 @@ sub vcl_recv {
 	if (req.http.host ~ "<%= domain.name %>$") {
 		std.log("varnish log info '<%= domain.name %>':" + req.http.host);
 
-		<% domain.subdomains.each_pair do |subdomain_name, subdomain| %>
+		<% domain.subdomains.each_pair do |subdomain_name, subdomain|
+			next if '_general'.eql? subdomain_name %>
 			<%= is_first ? '' : 'else ' %>if (req.http.host ~ "^<%= subdomain.name %>.<%= domain.name %>$") {
 				std.log("subdomain identified '<%= subdomain.name %>.<%= domain.name %>':" + req.http.host + " url: " + req.url );
 
@@ -44,12 +45,41 @@ sub vcl_recv {
 			<% is_first = false %>
 		<% end %>
 
+		# Important: This needs to be directly after the subdomain config
 		<%= is_first ? '' : 'else' %> {
-			# Redirect to default
+			# Redirect to default subdomain
 			std.log("varnish log info 'redirect to default':" + req.url);
 			set req.http.Location = "http://<%= default_subdomain_for(domain) %>.<%= domain.name %>" + req.url;
 			return (synth(750, "Permanently moved"));
 		}
+
+		# General part
+		<% domain.get_redirects.each_pair do |src, target| %>
+			if (req.url ~ "<%= src %>") {
+				std.log("general redirect identified '<%= domain.name %>' src:'<%= src %>':" + req.url);
+				set req.http.Location = "<%= target %>";
+				return (synth(750, "Permanently moved"));
+			}
+		<% end %>
+
+		<% subdomain = domain.subdomains['_general'] %>
+		<% %w(direct dynamic).each do |type| %>
+			<% subdomain[type].each_pair do |url, page| %>
+				if (req.url ~ "^<%= prepare_url url %>") {
+					std.log("page identified '<%= subdomain.name %>.<%= domain.name %>' Page:'<%= url %>':" + req.url);
+
+					<% if 'direct'.eql? type %>
+					set req.backend_hint = <%= page.director %>.backend();
+					<% unless page.plugin_url.nil? %>set req.url = "<%= page.plugin_url %>";<% end %>
+					<% else %>
+					set req.backend_hint = core_backend_director.backend();
+					set req.url = "/template/page?req_url=" + req.url + "&req_host=" + req.http.host + "<%= template_url_for(domain, page) %>";
+					<% end %>
+
+					return (hash);
+				}
+			<% end %>
+		<% end %>
 	}
 }
 

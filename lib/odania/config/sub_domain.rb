@@ -31,23 +31,17 @@ module Odania
 				result
 			end
 
-			def add_internal(web_url, group_name, plugin_url, plugin_name)
-				result = true
-				result = false unless self.assets.key? web_url
-				self.assets[web_url].group_name = group_name
-				self.assets[web_url].plugin_url = plugin_url
-				@plugins[:asset][web_url] << plugin_name
-				result
-			end
-
 			def get_redirects
-				return {} if self.config.nil?
-				return {} if self.config['redirects'].nil?
-				self.config['redirects']
+				return {} if self.redirects.nil?
+				self.redirects
 			end
 
 			def plugins(type, key)
 				@plugins[type][key]
+			end
+
+			def assets
+				self.internal.assets
 			end
 
 			def dump
@@ -93,7 +87,7 @@ module Odania
 					end
 				end
 
-				self.internal.load(data['internal']) unless data['internal'].nil?
+				self.internal.load(data['internal'], group_name) unless data['internal'].nil?
 				unless data['redirects'].nil?
 					data['redirects'].each_pair do |src_url, target_url|
 						duplicates[:redirect] << src_url if self.redirects.key? src_url

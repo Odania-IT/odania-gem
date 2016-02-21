@@ -1,0 +1,21 @@
+vcl 4.0;
+# generated varnish config: <%= ENVIRONMENT %>
+# local test: <%= LOCAL_TEST_MODE ? 'ENABLED' : 'DISABLED' %>
+
+sub vcl_recv {
+	std.log("pre varnish log info '<%= domain.name %>':" + req.http.host);
+	if (req.http.host ~ "<%= domain.name %>$") {
+		std.log("varnish log info '<%= domain.name %>':" + req.http.host);
+
+		<% general_subdomain.assets.each_pair do |url, page| %>
+			if (req.url ~ "^<%= prepare_url url %>") {
+				std.log("page identified '<%= subdomain.name %>.<%= domain.name %>' Page:'<%= url %>':" + req.url);
+
+				set req.backend_hint = <%= page.director %>.backend();
+				<% unless page.plugin_url.nil? %>set req.url = "<%= page.plugin_url %>";<% end %>
+
+				return (hash);
+			}
+		<% end %>
+	}
+}

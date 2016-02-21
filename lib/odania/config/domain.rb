@@ -41,6 +41,10 @@ module Odania
 				duplicates
 			end
 
+			def get_redirects
+				self.subdomains['_general'].get_redirects
+			end
+
 			def [](key)
 				self.subdomains[key]
 			end

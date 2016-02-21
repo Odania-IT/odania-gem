@@ -21,6 +21,7 @@ module Odania
 			end
 
 			def director
+				puts self.inspect if self.group_name.nil?
 				"#{Odania.varnish_sanitize(self.group_name)}_director"
 			end
 		end

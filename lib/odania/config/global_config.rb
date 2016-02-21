@@ -49,6 +49,11 @@ module Odania
 						puts 'Error start ' + '+' * 50
 						puts e.inspect
 						puts 'Error end ' + '+' * 50
+						puts 'Error backtrace start ' + '+' * 50
+						e.backtrace.each do |line|
+							puts line
+						end
+						puts 'Error backtrace end ' + '+' * 50
 					end
 				end
 			end
@@ -78,15 +83,17 @@ module Odania
 				@default_subdomains.deep_merge(plugin_cfg['default_subdomains']) unless plugin_cfg['default_subdomains'].nil?
 
 				# Add this service as a default backend if specified
-				@default_backend_groups << group_name if config_section['default']
+				@default_backend_groups << group_name if plugin_cfg['plugin-config']['default']
 
 				# Add config
-				config_section.each_pair do |key, val|
-					unless @config[key].nil?
-						@duplicates.add :config, {key => 'already defined'}, group_name
+				unless config_section.nil?
+					config_section.each_pair do |key, val|
+						unless @config[key].nil?
+							@duplicates.add :config, {key => 'already defined'}, group_name
+						end
 					end
+					@config.deep_merge! config_section
 				end
-				@config.deep_merge! config_section
 
 				# Add Domain Information
 				unless plugin_cfg['domains'].nil?

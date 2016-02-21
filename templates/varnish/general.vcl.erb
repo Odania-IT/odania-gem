@@ -18,6 +18,10 @@ sub vcl_recv {
 			std.log("template partial identified! Page:" + req.url);
 			set req.backend_hint = core_backend_director.backend();
 			return (hash);
+		} else if (req.url ~ "^/template/page") {
+			std.log("template page identified! Page:" + req.url);
+			set req.backend_hint = core_backend_director.backend();
+			return (hash);
 		}
 	}
 
