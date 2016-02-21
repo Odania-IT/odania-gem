@@ -10,7 +10,7 @@ require 'socket'
 
 BASE_DIR = File.absolute_path File.join File.dirname(__FILE__), '..'
 ENVIRONMENT = ENV['ENVIRONMENT'].nil? ? 'development' : ENV['ENVIRONMENT']
-LOCAL_TEST_MODE = 'development'.eql?(ENVIRONMENT)
+LOCAL_TEST_MODE = 'development'.eql?(ENVIRONMENT) unless defined? LOCAL_TEST_MODE
 
 module Odania
 	CORE_PLUGIN_NAME = 'odania-core'

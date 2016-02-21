@@ -105,8 +105,15 @@ class ConsulMock < Odania::Consul
 	end
 
 	class Health
+		def initialize
+			@health_states = [
+				{'Node' => '04977bad2036', 'CheckID' => 'serfHealth', 'Name' => 'Serf Health Status', 'Status' => 'passing', 'Notes' => '', 'Output' => 'Agent alive and reachable', 'ServiceID' => '', 'ServiceName' => ''},
+				{'Node' => '04977bad2036', 'CheckID' => 'service_1', 'Name' => "Service 'static-content' check", 'Status' => 'passing', 'Notes' => '', 'Output' => 'HTTP GET http://172.17.0.4:80/health: 200 OK Output: OK', 'ServiceID' => 'static_content_1', 'ServiceName' => 'static-content'}
+			]
+		end
+
 		def state(state=:any)
-			Diplomat::Health.state(state)
+			@health_states
 		end
 
 		def service(name)
