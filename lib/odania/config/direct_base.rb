@@ -18,6 +18,14 @@ module Odania
 			def reset
 				self.direct = Hash.new { |hash, key| hash[key] = Page.new }
 			end
+
+			def dump_direct_data
+				direct_data = {}
+				direct.each_pair do |web_url, page|
+					direct_data[web_url] = page.dump
+				end
+				direct_data
+			end
 		end
 	end
 end

@@ -13,11 +13,6 @@ module Odania
 			end
 
 			def dump
-				direct_data = {}
-				direct.each_pair do |web_url, page|
-					direct_data[web_url] = page.dump
-				end
-
 				dynamic_data = {}
 				dynamic.each_pair do |web_url, page|
 					dynamic_data[web_url] = page.dump
@@ -30,7 +25,7 @@ module Odania
 
 				{
 					'entry_point' => entry_point,
-					'direct' => direct_data,
+					'direct' => dump_direct_data,
 					'dynamic' => dynamic_data,
 					'assets' => asset_data
 				}
