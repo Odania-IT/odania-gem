@@ -1,5 +1,8 @@
 # Odania
 
+[![Build Status](https://travis-ci.org/Odania-IT/odania-gem.png?branch=master)](https://travis-ci.org/Odania-IT/odania-gem)
+[![Code Climate](https://codeclimate.com/github/Odania-IT/odania-gem/badges/gpa.svg)](https://codeclimate.com/github/Odania-IT/odania-gem)
+
 Helper for the Odania Portal
 
 ## Installation
