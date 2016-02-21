@@ -1,7 +1,7 @@
 module Odania
 	module Config
-		class Style
-			attr_accessor :name, :entry_point, :direct, :dynamic, :assets
+		class Style < DirectBase
+			attr_accessor :name, :entry_point, :dynamic, :assets
 
 			def initialize(name)
 				self.name = name
@@ -38,13 +38,8 @@ module Odania
 
 			def load(data, group_name)
 				reset
+				super(data, group_name)
 				self.entry_point = data['entry_point'] unless data['entry_point'].nil?
-
-				unless data['direct'].nil?
-					data['direct'].each_pair do |name, direct_data|
-						self.direct[name].load(direct_data, group_name)
-					end
-				end
 
 				unless data['dynamic'].nil?
 					data['dynamic'].each_pair do |name, dynamic_data|
@@ -62,8 +57,8 @@ module Odania
 			private
 
 			def reset
+				super
 				self.entry_point = nil
-				self.direct = Hash.new { |hash, key| hash[key] = Page.new }
 				self.dynamic = Hash.new { |hash, key| hash[key] = Page.new }
 				self.assets = Hash.new { |hash, key| hash[key] = Page.new }
 				@plugins = {:direct => Hash.new { |hash, key| hash[key] = [] }, :dynamic => Hash.new { |hash, key| hash[key] = [] }}

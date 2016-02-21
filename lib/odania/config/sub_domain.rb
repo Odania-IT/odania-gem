@@ -1,7 +1,7 @@
 module Odania
 	module Config
-		class SubDomain
-			attr_accessor :name, :config, :direct, :dynamic, :internal, :from_plugin, :redirects
+		class SubDomain < DirectBase
+			attr_accessor :name, :config, :dynamic, :internal, :from_plugin, :redirects
 
 			def initialize(name)
 				self.name = name
@@ -66,6 +66,7 @@ module Odania
 
 			def load(data)
 				reset
+				super(data, nil)
 				self.add(data)
 			end
 
@@ -106,9 +107,9 @@ module Odania
 			private
 
 			def reset
+				super
 				self.config = {}
 				self.from_plugin = {:config => Hash.new { |hash, key| hash[key] = [] }}
-				self.direct = Hash.new { |hash, key| hash[key] = Page.new }
 				self.dynamic = Hash.new { |hash, key| hash[key] = Page.new }
 				self.redirects = {}
 				self.internal = Internal.new

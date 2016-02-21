@@ -1,4 +1,5 @@
 require_relative 'config/internal'
+require_relative 'config/direct_base'
 require_relative 'config/domain'
 require_relative 'config/duplicates'
 require_relative 'config/layout'
