@@ -1,0 +1,18 @@
+language: ruby
+bundler_args: --without development
+rvm:
+  - 2.2
+  - jruby-19mode
+  - jruby-head
+  - ruby-head
+  - ree
+matrix:
+  allow_failures:
+    - rvm: jruby-19mode
+    - rvm: ree
+    - rvm: ruby-head
+    - rvm: jruby-head
+notifications:
+  email: true
+script:
+  - bundle exec rake
