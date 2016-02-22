@@ -8,6 +8,11 @@ sub vcl_synth {
 		set resp.status = 301;
 		return (deliver);
 	}
+
+	if (resp.status == 751) {
+		set resp.status = 404;
+		return (deliver);
+	}
 }
 
 include "/etc/varnish/backend.vcl";
@@ -15,3 +20,4 @@ include "/etc/varnish/general.vcl";
 include "/etc/varnish/redirects.vcl";
 include "/etc/varnish/sites.vcl";
 include "/etc/varnish/catch_all.vcl";
+include "/etc/varnish/final.vcl";

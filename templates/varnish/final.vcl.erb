@@ -1,0 +1,8 @@
+vcl 4.0;
+# generated varnish config: <%= ENVIRONMENT %>
+# local test: <%= LOCAL_TEST_MODE ? 'ENABLED' : 'DISABLED' %>
+
+### We do not want to try anything we have not specified
+sub vcl_recv {
+	return (synth(751, "Sorry... we did not find the page."));
+}

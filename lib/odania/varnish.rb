@@ -1,6 +1,7 @@
 require_relative 'varnish/generators/generate_backend_vcl'
 require_relative 'varnish/generators/generate_catch_all_vcl'
 require_relative 'varnish/generators/generate_default_vcl'
+require_relative 'varnish/generators/generate_final_vcl'
 require_relative 'varnish/generators/generate_general_vcl'
 require_relative 'varnish/generators/generate_redirects_vcl'
 require_relative 'varnish/generators/generate_sites_vcl'
@@ -42,6 +43,10 @@ module Odania
 
 			# Generate main vcl
 			gen = GenerateDefaultVcl.new
+			gen.write(out_dir)
+
+			# Generate final vcl
+			gen = GenerateFinalVcl.new
 			gen.write(out_dir)
 
 			puts
