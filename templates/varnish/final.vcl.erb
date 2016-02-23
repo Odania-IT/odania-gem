@@ -3,6 +3,9 @@ vcl 4.0;
 # local test: <%= LOCAL_TEST_MODE ? 'ENABLED' : 'DISABLED' %>
 
 ### We do not want to try anything we have not specified
+### so render the 404 page via the core backend
 sub vcl_recv {
-	return (synth(751, "Sorry... we did not find the page."));
+	set req.backend_hint = core_backend_director.backend();
+	set req.url = "/template/error?req_url=" + req.url + "&req_host=" + req.http.host;
+	return (hash);
 }
