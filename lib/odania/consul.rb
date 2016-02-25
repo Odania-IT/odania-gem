@@ -3,7 +3,8 @@ module Odania
 		attr_reader :service, :config, :event, :health
 
 		def initialize(consul_url)
-			consul_url = "http://#{ENV['CONSUL_PORT_8500_TCP_ADDR']}:#{ENV['CONSUL_PORT_8500_TCP_PORT']}" if consul_url.nil?
+			consul_url = ENV['CONSUL_ADDR'] if consul_url.nil?
+			consul_url = 'http://consul:8500' if consul_url.nil?
 			puts "Consul URL: #{consul_url}" if $debug
 			Diplomat.configure do |config|
 				# Set up a custom Consul URL
