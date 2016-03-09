@@ -36,16 +36,7 @@ module Odania
 
 		# Generate a unique number for this instance of the plugin
 		def get_plugin_instance_name(plugin_name)
-			plugin_instance_name_file = "#{INSTANCE_FILES_PATH}#{plugin_name}"
-
-			plugin_instance_name = nil
-			plugin_instance_name = File.read plugin_instance_name_file if File.exist? plugin_instance_name_file
-			return plugin_instance_name unless plugin_instance_name.nil?
-
-			available_instances = @consul.service.get_all_for plugin_name
-			plugin_instance_name = "#{plugin_name}_#{available_instances.length + 1}"
-			File.write plugin_instance_name_file, plugin_instance_name
-			plugin_instance_name
+			"#{plugin_name}_#{Socket.gethostname.gsub(/[^0-9a-zA-Z_]/, '_')}"
 		end
 
 		def plugin_config
