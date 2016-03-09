@@ -54,20 +54,20 @@ module Odania
 			register_plugin
 		end
 
-		 def reload_config
-			 puts 'Updating varnish config'
-			 current_number = 0
-			 current_number = File.read('/tmp/current_varnish_config_number').to_i if File.exist? '/tmp/current_varnish_config_number'
-			 current_number += 1
-			 File.write '/tmp/current_varnish_config_number', current_number
+		def reload_config
+			puts 'Updating varnish config'
+			current_number = 0
+			current_number = File.read('/tmp/current_varnish_config_number').to_i if File.exist? '/tmp/current_varnish_config_number'
+			current_number += 1
+			File.write '/tmp/current_varnish_config_number', current_number
 
-			 cmd = "varnishadm vcl.load reload#{current_number} /etc/varnish/default.vcl"
-			 puts "CMD: #{cmd}"
-			 puts `#{cmd}`
-			 cmd = "varnishadm vcl.use reload#{current_number}"
-			 puts "CMD: #{cmd}"
-			 puts `#{cmd}`
-		 end
+			cmd = "varnishadm vcl.load reload#{current_number} /etc/varnish/default.vcl"
+			puts "CMD: #{cmd}"
+			puts `#{cmd}`
+			cmd = "varnishadm vcl.use reload#{current_number}"
+			puts "CMD: #{cmd}"
+			puts `#{cmd}`
+		end
 
 		private
 
