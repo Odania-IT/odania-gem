@@ -31,7 +31,7 @@ describe Odania::Varnish do
 
 		it 'generates the varnish config' do
 			$consul_mock.config.set('global_plugins_config', global_cfg)
-			expect(subject.generate('/tmp/varnish')).to eq('odania-varnish|odania_varnish_1')
+			expect(subject.generate('/tmp/varnish')).to eq("odania-varnish|odania_varnish_#{Socket.gethostname.gsub(/[^0-9a-zA-Z_]/, '_')}")
 		end
 	end
 end
