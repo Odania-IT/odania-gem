@@ -54,8 +54,7 @@ module Odania
 		def get_domain_config_for(domain, global_config=nil)
 			global_config = get_global_config if global_config.nil?
 
-			domain_info = PublicSuffix.parse(domain)
-			return global_config['domains'][domain_info.domain], domain unless global_config['domains'][domain_info.domain].nil?
+			return global_config['domains'][domain], domain unless global_config['domains'][domain].nil?
 			return false, nil
 		end
 
