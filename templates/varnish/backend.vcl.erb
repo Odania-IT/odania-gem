@@ -25,12 +25,14 @@ backend default {
 
 <% backend_groups.each_pair do |group_name, backend_group| %>
 	<% backend_group.backends.each do |backend| %>
+		<% unless backend_name_already_taken(group_name, backend.instance_name) %>
 
-		backend <%= Odania.varnish_sanitize(group_name) %>_<%= Odania.varnish_sanitize(backend.instance_name) %> {
+		backend <%= backend_name_for(group_name, backend.instance_name) %> {
 			.host = "<%= backend.host %>";
 			.port = "<%= backend.port %>";
 			.probe = www_probe;
 		}
+		<% end %>
 	<% end %>
 <% end %>
 

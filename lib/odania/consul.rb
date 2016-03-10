@@ -5,7 +5,7 @@ module Odania
 		def initialize(consul_url)
 			consul_url = ENV['CONSUL_ADDR'] if consul_url.nil?
 			consul_url = 'http://consul:8500' if consul_url.nil?
-			puts "Consul URL: #{consul_url}" if $debug
+			$logger.info "Consul URL: #{consul_url}" if $debug
 			Diplomat.configure do |config|
 				# Set up a custom Consul URL
 				config.url = consul_url
@@ -59,7 +59,7 @@ module Odania
 				Diplomat::Service.get_all.each_pair do |key, _value|
 					services[key.to_s] = get_all_for(key)
 				end
-				puts "SERVICES: #{JSON.pretty_generate services}" if $debug
+				$logger.info "SERVICES: #{JSON.pretty_generate services}" if $debug
 				services
 			end
 
@@ -78,9 +78,9 @@ module Odania
 
 			def register(consul_config)
 				if Diplomat::Service.register consul_config
-					puts 'Service registered' if $debug
+					$logger.info 'Service registered' if $debug
 				else
-					puts 'Error registering service' if $debug
+					$logger.error 'Error registering service'
 				end
 			end
 

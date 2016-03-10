@@ -7,10 +7,12 @@ require 'public_suffix'
 require 'deep_merge'
 require 'json'
 require 'socket'
+require 'logger'
 
 BASE_DIR = File.absolute_path File.join File.dirname(__FILE__), '..'
 ENVIRONMENT = ENV['ENVIRONMENT'].nil? ? 'development' : ENV['ENVIRONMENT']
 LOCAL_TEST_MODE = 'development'.eql?(ENVIRONMENT) unless defined? LOCAL_TEST_MODE
+$logger = Logger.new(STDOUT)
 
 module Odania
 	CORE_PLUGIN_NAME = 'odania-core'

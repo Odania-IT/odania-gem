@@ -30,7 +30,7 @@ module Odania
 
 			def load_from_consul
 				Odania.plugin.get_all.each_pair do |plugin_name, instances|
-					puts "PLUGIN NAME #{plugin_name} - #{instances.count}" if $debug
+					$logger.info "PLUGIN NAME #{plugin_name} - #{instances.count}" if $debug
 					instances.each do |instance|
 						add_backend(instance)
 					end
@@ -42,27 +42,27 @@ module Odania
 						puts JSON.pretty_generate config if $debug
 						self.add_plugin_config(config)
 					rescue => e
-						puts 'Error loading configuration'
-						puts 'Config start ' + '+' * 50
+						$logger.error 'Error loading configuration'
+						$logger.error 'Config start ' + '+' * 50
 						puts JSON.pretty_generate config
-						puts 'Config end ' + '+' * 50
-						puts 'Error start ' + '+' * 50
-						puts e.inspect
-						puts 'Error end ' + '+' * 50
-						puts 'Error backtrace start ' + '+' * 50
+						$logger.error 'Config end ' + '+' * 50
+						$logger.error 'Error start ' + '+' * 50
+						$logger.error e.inspect
+						$logger.error 'Error end ' + '+' * 50
+						$logger.error 'Error backtrace start ' + '+' * 50
 						e.backtrace.each do |line|
-							puts line
+							$logger.error line
 						end
-						puts 'Error backtrace end ' + '+' * 50
+						$logger.error 'Error backtrace end ' + '+' * 50
 					end
 				end
 			end
 
 			def generate_global_config
-				puts 'Loading plugin configs from consul'
+				$logger.info 'Loading plugin configs from consul'
 				load_from_consul
 
-				puts 'Generating global config'
+				$logger.info 'Generating global config'
 				config = self.dump
 				puts JSON.pretty_generate config if $debug
 				Odania.plugin.set_global_config config
@@ -75,7 +75,7 @@ module Odania
 				group_name = plugin_cfg['plugin-config']['name']
 
 				if $debug
-					puts 'Loading configuration'
+					$logger.info 'Loading configuration'
 					puts JSON.pretty_generate plugin_cfg
 				end
 

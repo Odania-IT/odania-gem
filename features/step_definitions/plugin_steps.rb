@@ -7,7 +7,7 @@ Given(/^I initialize the gem$/) do
 	Odania.plugin.get_all.each_pair do |name, instances|
 		instances.each do |instance|
 			if instance.ServiceName.start_with? 'test-plugin'
-				puts "Deregister: #{instance}" if $debug
+				$logger.info "Deregister: #{instance}" if $debug
 				Odania.plugin.deregister instance.ServiceID
 			end
 		end

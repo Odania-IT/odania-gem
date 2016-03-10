@@ -6,6 +6,8 @@ module Odania
 			self.default_backend = default_backend
 			self.backend_groups = backend_groups
 			self.template = File.new("#{BASE_DIR}/templates/varnish/backend.vcl.erb").read
+
+			@backend_names = []
 		end
 
 		def core_backends
@@ -18,6 +20,21 @@ module Odania
 				end
 			end
 			core_backends
+		end
+
+		def backend_name_for(group_name, instance_name)
+			backend_name = "#{Odania.varnish_sanitize(group_name)}_#{Odania.varnish_sanitize(instance_name)}"
+			@backend_names << backend_name
+			backend_name
+		end
+
+		def backend_name_already_taken(group_name, instance_name)
+			backend_name = "#{Odania.varnish_sanitize(group_name)}_#{Odania.varnish_sanitize(instance_name)}"
+			if @backend_names.include? backend_name
+				$logger.error "The Backend #{backend_name} is already defined!"
+				return true
+			end
+			false
 		end
 
 		def render
