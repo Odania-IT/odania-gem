@@ -76,22 +76,13 @@ module Odania
 
 			ips = Odania.ips
 			plugin_config['plugin-config']['ips'] = ips
-			plugin_config['plugin-config']['ip'] = primary_ip(ips)
+			plugin_config['plugin-config']['ip'] = Odania.primary_ip(ips)
 			plugin_config['plugin-config']['port'] = 80
 			plugin_config['plugin-config']['tags'] = ["plugin-#{get_plugin_name}"]
 			puts JSON.pretty_generate plugin_config if $debug
 
 			plugin_instance_name = Odania.plugin.get_plugin_instance_name get_plugin_name
 			Odania.plugin.register plugin_instance_name, plugin_config
-		end
-
-		# Rancher assigns two ip's the ip starting with 10. is routed through the hosts
-		def primary_ip(ips)
-			ips.each do |ip|
-				return ip if ip.start_with? '10.'
-			end
-
-			ips.first
 		end
 
 		def get_plugin_name

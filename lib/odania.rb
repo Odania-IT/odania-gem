@@ -47,6 +47,15 @@ module Odania
 		ips
 	end
 
+	# Rancher assigns two ip's the ip starting with 10. is routed through the hosts
+	def self.primary_ip(ips)
+		ips.each do |ip|
+			return ip if ip.start_with? '10.'
+		end
+
+		ips.first
+	end
+
 	def self.varnish_sanitize(name)
 		raise 'Could not sanitize varnish name!!' if name.nil?
 		name.gsub(/[^0-9a-zA-Z_]/, '_')
