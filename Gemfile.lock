@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    odania (0.0.28)
+    odania (0.0.29)
       deep_merge
       diplomat
       erubis
@@ -105,5 +105,5 @@ DEPENDENCIES
   guard
   guard-rspec
   odania!
-  rake
+  rake (< 11.0)
   rspec
