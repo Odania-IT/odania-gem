@@ -90,8 +90,11 @@ sub vcl_backend_response {
 	}
 
 	# Allow items to be stale if needed.
-	set beresp.do_esi = true;
 	set beresp.grace = 6h;
+
+	if (beresp.http.X-Do-Esi ~ "true") {
+		set beresp.do_esi = true;
+	}
 
 	<% if LOCAL_TEST_MODE %>
 	set beresp.ttl = 1s;
