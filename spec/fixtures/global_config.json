@@ -39,6 +39,25 @@
 			}
 		},
 		"example.com": {
+
+			"_general": {
+				"config": {
+
+				},
+				"data": {
+					"external": {
+
+					},
+					"internal": {
+
+					},
+					"assets": {
+
+					}
+				}
+			},
+
+
 			"_general": {
 				"config": {
 				},

@@ -33,6 +33,11 @@ module Odania
 		@varnish
 	end
 
+	def self.consul
+		Odania.configure
+		@consul
+	end
+
 	def self.configure(consul_url=nil)
 		@consul = Consul.new(consul_url) if @consul.nil?
 		$debug = false
