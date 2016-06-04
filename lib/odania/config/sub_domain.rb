@@ -62,7 +62,7 @@ module Odania
 
 				unless data['web'].nil?
 					data['web'].each_pair do |name, partial_data|
-						self.web[name].load(partial_data)
+						self.web[name].load(partial_data, group_name)
 					end
 				end
 
@@ -82,11 +82,11 @@ module Odania
 				duplicates
 			end
 
-			def [](key)
-				key = key.to_s
-				return self.web if :web.eql? key
-				return self.layouts if :layouts.eql? key
-				super(key)
+			def [](type)
+				type = type.to_sym
+				return self.web if :web.eql? type
+				return self.layouts if :layouts.eql? type
+				super(type)
 			end
 
 			private
