@@ -20,17 +20,11 @@ module Odania
 	autoload :Config, 'odania/config'
 	autoload :Consul, 'odania/consul'
 	autoload :Plugin, 'odania/plugin'
-	autoload :Varnish, 'odania/varnish'
 
 	def self.plugin
 		Odania.configure
 		@plugin = Plugin.new(@consul) if @plugin.nil?
 		@plugin
-	end
-
-	def self.varnish
-		@varnish = Varnish.new if @varnish.nil?
-		@varnish
 	end
 
 	def self.consul

@@ -1,7 +1,0 @@
-{
-	"plugin-config": {
-		"name": "odania-varnish",
-		"default": false
-	},
-	"domains": {}
-}
