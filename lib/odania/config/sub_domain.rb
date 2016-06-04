@@ -20,17 +20,6 @@ module Odania
 				errors
 			end
 
-			def add_page(type, web_url, group_name, url_data, plugin_name)
-				result = true
-				result = false unless self.pages[type].key? web_url
-				self.pages[type][web_url].group_name = group_name
-				self.pages[type][web_url].plugin_url = url_data['plugin_url']
-				self.pages[type][web_url].cacheable = url_data['cacheable'] unless url_data['cacheable'].nil?
-				self.pages[type][web_url].expires = url_data['expires'] unless url_data['expires'].nil?
-				@plugins[:page]["#{type}-#{web_url}"] << plugin_name
-				result
-			end
-
 			def get_redirects
 				return {} if self.redirects.nil?
 				self.redirects
