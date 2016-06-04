@@ -22,7 +22,10 @@ describe Odania::Config::PluginConfig do
 
 		it 'dumps the same config' do
 			expect(subject.load(cfg)).to be(true)
-			expect(subject.dump).to eql(cfg)
+			result = subject.dump
+			diff = HashDiff.best_diff result, cfg
+			puts "Best diff: #{diff.inspect}"
+			expect(result).to eql(cfg)
 		end
 	end
 end

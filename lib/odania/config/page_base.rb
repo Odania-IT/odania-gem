@@ -1,7 +1,7 @@
 module Odania
 	module Config
 		class PageBase
-			attr_accessor :direct, :dynamic
+			attr_accessor :assets, :partials
 
 			def initialize
 				reset
@@ -9,17 +9,17 @@ module Odania
 
 			def add(data, group_name=nil)
 				duplicates = Hash.new { |hash, key| hash[key] = [] }
-				unless data['direct'].nil?
-					data['direct'].each_pair do |name, direct_data|
-						duplicates[:direct] << name if self.direct.key? name
-						self.direct[name].load(direct_data, group_name)
+				unless data['assets'].nil?
+					data['assets'].each_pair do |name, asset_data|
+						duplicates[:assets] << name if self.assets.key? name
+						self.assets[name].load(asset_data, group_name)
 					end
 				end
 
-				unless data['dynamic'].nil?
-					data['dynamic'].each_pair do |name, dynamic_data|
-						duplicates[:dynamic] << name if self.direct.key? name
-						self.dynamic[name].load(dynamic_data, group_name)
+				unless data['partials'].nil?
+					data['partials'].each_pair do |name, partial_data|
+						duplicates[:partials] << name if self.partials.key? name
+						self.partials[name].load(partial_data, group_name)
 					end
 				end
 				duplicates
@@ -30,31 +30,31 @@ module Odania
 			end
 
 			def reset
-				self.direct = Hash.new { |hash, key| hash[key] = Page.new }
-				self.dynamic = Hash.new { |hash, key| hash[key] = Page.new }
+				self.assets = Hash.new { |hash, key| hash[key] = Page.new }
+				self.partials = Hash.new { |hash, key| hash[key] = Page.new }
 
-				@plugins = {:direct => Hash.new { |hash, key| hash[key] = [] }, :dynamic => Hash.new { |hash, key| hash[key] = [] }}
+				@plugins = {:partials => Hash.new { |hash, key| hash[key] = [] }, :assets => Hash.new { |hash, key| hash[key] = [] }}
 			end
 
 			def [](type)
-				return self.direct if 'direct'.eql? type.to_s
-				self.dynamic
+				return self.assets if 'assets'.eql? type.to_s
+				self.partials
 			end
 
 			def dump
-				direct_data = {}
-				direct.each_pair do |web_url, page|
-					direct_data[web_url] = page.dump
+				asset_data = {}
+				assets.each_pair do |web_url, page|
+					asset_data[web_url] = page.dump
 				end
 
-				dynamic_data = {}
-				dynamic.each_pair do |web_url, page|
-					dynamic_data[web_url] = page.dump
+				partial_data = {}
+				partials.each_pair do |web_url, page|
+					partial_data[web_url] = page.dump
 				end
 
 				{
-					'direct' => direct_data,
-					'dynamic' => dynamic_data
+					'assets' => asset_data,
+					'partials' => partial_data
 				}
 			end
 		end

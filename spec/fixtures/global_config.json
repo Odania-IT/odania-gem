@@ -30,49 +30,30 @@
 					"odania.com$": "www.odania.com",
 					"odania.de$": "www.odania.com/de"
 				},
-				"internal": {
-					"layouts": {
-					},
-					"partials": {
-					}
+				"assets": {
+				},
+				"layouts": {
+				},
+				"partials": {
 				}
 			}
 		},
 		"example.com": {
-
 			"_general": {
-				"config": {
-
-				},
-				"data": {
-					"external": {
-
-					},
-					"internal": {
-
-					},
-					"assets": {
-
-					}
-				}
+				"config": {}
 			},
-
-
 			"_general": {
 				"config": {
 				},
-				"direct": {
+				"web": {
 					"/imprint": {
 						"group_name": "static-content",
 						"plugin_url": "/contents/my-awesome-imprint"
 					}
 				},
-				"internal": {
-					"layouts": {
-					},
-					"partials": {
-					}
-				}
+				"assets": {},
+				"layouts": {},
+				"partials": {}
 			},
 			"www": {
 				"dynamic": {
@@ -105,54 +86,52 @@
 						"plugin_url": "/contents/my-special-imprint"
 					}
 				},
-				"internal": {
-					"layouts": {
-						"main": {
+				"layouts": {
+					"main": {
+						"config": {
 							"styles": {
 								"_general": {
-									"entry_point": "application.html.erb",
-									"direct": {
-										"layouts/mac-beath/img/favicon/favicon.png": {
-											"group_name": "static-content",
-											"plugin_url": "layouts/mac-beath/img/favicon/favicon.png",
-											"cacheable": true,
-											"expires": 60
-										},
-										"layouts/mac-beath/img/photos/t12.jpg": {
-											"group_name": "static-content",
-											"plugin_url": "layouts/mac-beath/img/photos/t12.jpg"
-										}
-									},
-									"dynamic": {
-										"layouts/simple/application_part1.html": {
-											"group_name": "static-content",
-											"plugin_url": "layouts/simple/application_part1.html.erb",
-											"cacheable": true,
-											"expires": 60
-										}
-									}
+									"entry_point": "application.html.erb"
 								},
 								"left_menu": {
-									"entry_point": "application.html.erb",
-									"direct": {},
-									"dynamic": {}
+									"entry_point": "application.html.erb"
 								}
 							}
-						}
-					},
-					"partials": {
-						"footer": {
-							"name": "footer",
-							"group_name": "static-content",
-							"plugin_url": "partials/footer.html",
-							"cacheable": true,
-							"expires": 60
 						},
-						"tracking": {
-							"name": "tracking",
-							"group_name": "static-content",
-							"plugin_url": "partials/tracking.html"
+						"assets": {
+							"layouts/mac-beath/img/favicon/favicon.png": {
+								"group_name": "static-content",
+								"plugin_url": "layouts/mac-beath/img/favicon/favicon.png",
+								"cacheable": true,
+								"expires": 60
+							},
+							"layouts/mac-beath/img/photos/t12.jpg": {
+								"group_name": "static-content",
+								"plugin_url": "layouts/mac-beath/img/photos/t12.jpg"
+							}
+						},
+						"partials": {
+							"layouts/simple/application_part1.html": {
+								"group_name": "static-content",
+								"plugin_url": "layouts/simple/application_part1.html.erb",
+								"cacheable": true,
+								"expires": 60
+							}
 						}
+					}
+				},
+				"partials": {
+					"footer": {
+						"name": "footer",
+						"group_name": "static-content",
+						"plugin_url": "partials/footer.html",
+						"cacheable": true,
+						"expires": 60
+					},
+					"tracking": {
+						"name": "tracking",
+						"group_name": "static-content",
+						"plugin_url": "partials/tracking.html"
 					}
 				}
 			}

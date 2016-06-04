@@ -51,6 +51,7 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
+    hashdiff (0.3.0)
     json (1.8.3)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -106,6 +107,7 @@ DEPENDENCIES
   cucumber
   guard
   guard-rspec
+  hashdiff
   odania!
   rake (< 11.0)
   rspec

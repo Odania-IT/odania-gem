@@ -21,48 +21,44 @@
 			"_general": {
 				"redirects": {},
 				"config": {},
-				"direct": {},
-				"dynamic": {},
-				"internal": {
-					"layouts": {
-						"main": {
+				"web": {},
+				"assets": {},
+				"layouts": {
+					"main": {
+						"config": {
 							"styles": {
 								"_general": {
-									"entry_point": "application.html.erb",
-									"direct": {
-										"layouts/mac-beath/img/favicon/favicon.png": {
-											"plugin_url": "layouts/mac-beath/img/favicon/favicon.png",
-											"cacheable": true,
-											"expires": 60
-										},
-										"layouts/mac-beath/img/photos/t12.jpg": {
-											"plugin_url": "layouts/mac-beath/img/photos/t12.jpg"
-										}
-									},
-									"dynamic": {
-										"layouts/simple/application_part1.html": {
-											"plugin_url": "layouts/simple/application_part1.html.erb",
-											"cacheable": true,
-											"expires": 60
-										}
-									},
-									"assets": {}
+									"entry_point": "application.html.erb"
 								},
 								"left_menu": {
-									"entry_point": "application.html.erb",
-									"direct": {},
-									"dynamic": {},
-									"assets": {}
+									"entry_point": "application.html.erb"
 								}
 							}
+						},
+						"assets": {
+							"layouts/mac-beath/img/favicon/favicon.png": {
+								"plugin_url": "layouts/mac-beath/img/favicon/favicon.png",
+								"cacheable": true,
+								"expires": 60
+							},
+							"layouts/mac-beath/img/photos/t12.jpg": {
+								"plugin_url": "layouts/mac-beath/img/photos/t12.jpg"
+							}
+						},
+						"partials": {
+							"layouts/simple/application_part1.html": {
+								"plugin_url": "layouts/simple/application_part1.html.erb",
+								"cacheable": true,
+								"expires": 60
+							}
 						}
-					},
-					"partials": {
-						"footer": {
-							"plugin_url": "partials/footer.html",
-							"cacheable": true,
-							"expires": 60
-						}
+					}
+				},
+				"partials": {
+					"footer": {
+						"plugin_url": "partials/footer.html",
+						"cacheable": true,
+						"expires": 60
 					}
 				}
 			}
@@ -73,7 +69,7 @@
 					"^/test": "/test2"
 				},
 				"config": {},
-				"direct": {
+				"web": {
 					"/imprint": {
 						"plugin_url": "/my-imprint",
 						"cacheable": true,
@@ -84,11 +80,9 @@
 						"cacheable": false
 					}
 				},
-				"dynamic": {},
-				"internal": {
-					"layouts": {},
-					"partials": {}
-				}
+				"assets": {},
+				"layouts": {},
+				"partials": {}
 			}
 		}
 	}

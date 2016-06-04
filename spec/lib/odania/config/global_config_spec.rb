@@ -14,9 +14,11 @@ describe Odania::Config::GlobalConfig do
 			expect(cfg_result['domains']['example.com']['www']['redirects']).to eql(cfg1['domains']['example.com']['www']['redirects'])
 			expect(cfg_result['domains']['example.com']['www']['config']).to eql(cfg1['domains']['example.com']['www']['config'])
 
-			cfg1['domains']['example.com']['www']['direct'].each_pair do |path, data|
+			%w(web assets partials).each do |type|
+				cfg1['domains']['example.com']['www'][type].each_pair do |path, data|
 
-				expect(cfg_result['domains']['example.com']['www']['direct'][path]['plugin_url']).to eql(data['plugin_url'])
+					expect(cfg_result['domains']['example.com']['www'][type][path]['plugin_url']).to eql(data['plugin_url'])
+				end
 			end
 
 		end
@@ -29,7 +31,7 @@ describe Odania::Config::GlobalConfig do
 			duplicates = subject.duplicates
 			expect(subject.duplicates).not_to be_empty
 			expect(duplicates).to have_key(:config)
-			expect(duplicates).to have_key(:direct)
+			expect(duplicates).to have_key(:partials)
 			expect(duplicates).to have_key(:redirect)
 		end
 

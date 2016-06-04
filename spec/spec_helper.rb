@@ -6,6 +6,7 @@ CodeClimate::TestReporter.start
 require 'odania'
 require_relative 'support/consul_mock'
 
+require 'hashdiff'
 
 RSpec.configure do |config|
 	config.before(:each) do

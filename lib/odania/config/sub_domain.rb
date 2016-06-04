@@ -1,7 +1,7 @@
 module Odania
 	module Config
 		class SubDomain < PageBase
-			attr_accessor :name, :config, :dynamic, :internal, :from_plugin, :redirects
+			attr_accessor :name, :config, :web, :layouts, :from_plugin, :redirects
 
 			def initialize(name)
 				self.name = name
@@ -40,16 +40,23 @@ module Odania
 				@plugins[type][key]
 			end
 
-			def assets
-				self.internal.assets
-			end
-
 			def dump
 				result = super
 
+				layout_data = {}
+				layouts.each_pair do |layout_name, layout|
+					layout_data[layout_name] = layout.dump
+				end
+
+				web_data = {}
+				web.each_pair do |url, page|
+					web_data[url] = page.dump
+				end
+
 				result['redirects'] = self.redirects
 				result['config'] = self.config
-				result['internal'] = self.internal.dump
+				result['web'] = web_data
+				result['layouts'] = layout_data
 				result
 			end
 
@@ -64,7 +71,18 @@ module Odania
 
 				self.config = data['config'] unless data['config'].nil?
 
-				self.internal.load(data['internal'], group_name) unless data['internal'].nil?
+				unless data['web'].nil?
+					data['web'].each_pair do |name, partial_data|
+						self.web[name].load(partial_data)
+					end
+				end
+
+				unless data['layouts'].nil?
+					data['layouts'].each_pair do |name, layout_data|
+						self.layouts[name].load(layout_data, group_name)
+					end
+				end
+
 				unless data['redirects'].nil?
 					data['redirects'].each_pair do |src_url, target_url|
 						duplicates[:redirect] << src_url if self.redirects.key? src_url
@@ -82,7 +100,8 @@ module Odania
 				self.config = {}
 				self.from_plugin = {:config => Hash.new { |hash, key| hash[key] = [] }}
 				self.redirects = {}
-				self.internal = Internal.new
+				self.layouts = Hash.new { |hash, key| hash[key] = Layout.new }
+				self.web = Hash.new { |hash, key| hash[key] = Page.new }
 			end
 		end
 	end

@@ -1,7 +1,7 @@
 module Odania
 	module Config
-		class Style < PageBase
-			attr_accessor :name, :entry_point, :dynamic, :assets
+		class Style
+			attr_accessor :name, :entry_point
 
 			def initialize(name)
 				self.name = name
@@ -15,13 +15,7 @@ module Odania
 			def dump
 				result = super
 
-				asset_data = {}
-				assets.each_pair do |asset_url, page|
-					asset_data[asset_url] = page.dump
-				end
-
 				result['entry_point'] = entry_point
-				result['assets'] = asset_data
 				result
 			end
 
@@ -29,12 +23,6 @@ module Odania
 				reset
 				super(data, group_name)
 				self.entry_point = data['entry_point'] unless data['entry_point'].nil?
-
-				unless data['assets'].nil?
-					data['assets'].each_pair do |name, asset_data|
-						self.assets[name].load(asset_data, group_name)
-					end
-				end
 			end
 
 			private
@@ -42,7 +30,6 @@ module Odania
 			def reset
 				super
 				self.entry_point = nil
-				self.assets = Hash.new { |hash, key| hash[key] = Page.new }
 			end
 		end
 	end
