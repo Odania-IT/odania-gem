@@ -37,7 +37,8 @@ module Odania
 			end
 
 			def [](type)
-				return self.assets if 'assets'.eql? type.to_s
+				type = type.to_sym
+				return self.assets if :assets.eql? type
 				self.partials
 			end
 

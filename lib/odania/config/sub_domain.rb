@@ -82,6 +82,13 @@ module Odania
 				duplicates
 			end
 
+			def [](key)
+				key = key.to_s
+				return self.web if :web.eql? key
+				return self.layouts if :layouts.eql? key
+				super(key)
+			end
+
 			private
 
 			def reset
