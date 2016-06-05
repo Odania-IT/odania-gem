@@ -82,10 +82,19 @@ module Odania
 				duplicates
 			end
 
+			def layout_assets
+				layout_assets = {}
+				self.layouts.each_pair do |_name, layout|
+					layout_assets.merge! layout.assets
+				end
+				layout_assets
+			end
+
 			def [](type)
 				type = type.to_sym
 				return self.web if :web.eql? type
 				return self.layouts if :layouts.eql? type
+				return self.layout_assets if :layout_assets.eql? type
 				super(type)
 			end
 
