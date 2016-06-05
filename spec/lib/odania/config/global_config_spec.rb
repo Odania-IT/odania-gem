@@ -42,23 +42,23 @@ describe Odania::Config::GlobalConfig do
 			$consul_mock.service.services = {
 				cfg_name => [
 					OpenStruct.new({
-						'Node' => 'agent-one',
-						'Address' => '172.20.20.1',
-						'ServiceID' => "#{cfg_name}_1",
-						'ServiceName' => cfg_name,
-						'ServiceTags' => [],
-						'ServicePort' => 80,
-						'ServiceAddress' => '172.20.20.1'
-					}),
+											'Node' => 'agent-one',
+											'Address' => '172.20.20.1',
+											'ServiceID' => "#{cfg_name}_1",
+											'ServiceName' => cfg_name,
+											'ServiceTags' => [],
+											'ServicePort' => 80,
+											'ServiceAddress' => '172.20.20.1'
+										}),
 					OpenStruct.new({
-						'Node' => 'agent-two',
-						'Address' => '172.20.20.2',
-						'ServiceID' => "#{cfg_name}_2",
-						'ServiceName' => cfg_name,
-						'ServiceTags' => [],
-						'ServicePort' => 80,
-						'ServiceAddress' => '172.20.20.1'
-					})
+											'Node' => 'agent-two',
+											'Address' => '172.20.20.2',
+											'ServiceID' => "#{cfg_name}_2",
+											'ServiceName' => cfg_name,
+											'ServiceTags' => [],
+											'ServicePort' => 80,
+											'ServiceAddress' => '172.20.20.1'
+										})
 				]
 			}
 
