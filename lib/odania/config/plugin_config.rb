@@ -1,7 +1,7 @@
 module Odania
 	module Config
 		class PluginConfig
-			attr_accessor :domains, :config, :default_subdomains, :plugin_config
+			attr_accessor :domains, :config, :valid_domains, :default_domains, :plugin_config
 
 			def initialize
 				reset
@@ -12,7 +12,8 @@ module Odania
 				reset
 				@config = data['config'] unless data['config'].nil?
 				@plugin_config = data['plugin-config'] unless data['plugin-config'].nil?
-				@default_subdomains = data['default_subdomains'] unless data['default_subdomains'].nil?
+				@valid_domains = data['valid_domains'] unless data['valid_domains'].nil?
+				@default_domains = data['default_domains'] unless data['default_domains'].nil?
 				unless data['domains'].nil?
 					data['domains'].each_pair do |name, domain_data|
 						@domains[name].load(domain_data)
@@ -30,6 +31,8 @@ module Odania
 			def reset
 				@config = {}
 				@plugin_config = {}
+				@default_domains = {}
+				@valid_domains = {}
 				@domains = Hash.new { |hash, key| hash[key] = Domain.new(key) }
 			end
 
@@ -42,7 +45,8 @@ module Odania
 				{
 					'plugin-config' => plugin_config,
 					'config' => config,
-					'default_subdomains' => @default_subdomains,
+					'default_domains' => @default_domains,
+					'valid_domains' => @valid_domains,
 					'domains' => domain_data
 				}
 			end

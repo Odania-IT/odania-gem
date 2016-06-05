@@ -18,8 +18,15 @@
 			]
 		}
 	},
-	"default_subdomains": {
-		"_general": "www"
+	"valid_domains": {
+		"example.com": [
+			"www"
+		]
+	},
+	"default_domains": {
+		"example.com": [
+			"www"
+		]
 	},
 	"domains": {
 		"_general": {

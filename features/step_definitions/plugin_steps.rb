@@ -20,9 +20,6 @@ Given(/^I registered the plugin "([^"]*)"$/) do |plugin_name|
 		'ip' => '127.0.0.1',
 		'port' => 80,
 		'tags' => ["plugin-#{plugin_name}"],
-		'default_subdomains' => {
-			'_general' => 'default_sub'
-		},
 		'domains' => {
 			'odania.com' => {
 				'contents' => {
@@ -34,7 +31,6 @@ Given(/^I registered the plugin "([^"]*)"$/) do |plugin_name|
 					'languages' => %w(de en),
 					'layout' => 'simple',
 					'language_selector' => 'prefix',
-					'default_subdomain' => 'page_sub',
 					'redirects' => {
 						'^/test' => '/games'
 					}

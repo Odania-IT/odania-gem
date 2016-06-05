@@ -7,6 +7,8 @@ module Odania
 
 				reset
 				@default_backend_groups = config['default_backend_groups'] unless config['default_backend_groups'].nil?
+				@valid_domains = config['valid_domains'] unless config['valid_domains'].nil?
+				@default_domains = config['default_domains'] unless config['default_domains'].nil?
 
 				unless config['domains'].nil?
 					config['domains'].each_pair do |name, data|
@@ -80,7 +82,8 @@ module Odania
 				end
 
 				@plugin_config[group_name] = plugin_cfg['plugin-config']
-				@default_subdomains.deep_merge(plugin_cfg['default_subdomains']) unless plugin_cfg['default_subdomains'].nil?
+				@valid_domains.deep_merge!(plugin_cfg['valid_domains']) unless plugin_cfg['valid_domains'].nil?
+				@default_domains.deep_merge!(plugin_cfg['default_domains']) unless plugin_cfg['default_domains'].nil?
 
 				# Add this service as a default backend if specified
 				@default_backend_groups << group_name if plugin_cfg['plugin-config']['default']
@@ -121,7 +124,8 @@ module Odania
 				@default_backend_groups = []
 				@duplicates = Duplicates.new
 				@backend_groups = Hash.new { |hash, key| hash[key] = BackendGroup.new(key) }
-				@default_subdomains = {}
+				@valid_domains = {}
+				@default_domains = {}
 
 				@domains['_general'].add_subdomain('_general')
 			end
@@ -141,8 +145,12 @@ module Odania
 				@backend_groups[group_name].backends.first
 			end
 
-			def default_subdomains
-				@default_subdomains
+			def valid_domains
+				@valid_domains
+			end
+
+			def default_domains
+				@default_domains
 			end
 
 			def default_redirects
@@ -154,6 +162,8 @@ module Odania
 			def dump
 				cfg = super
 				cfg['default_backend_groups'] = @default_backend_groups
+				cfg['default_domains'] = @default_domains
+				cfg['valid_domains'] = @valid_domains
 				cfg
 			end
 		end
