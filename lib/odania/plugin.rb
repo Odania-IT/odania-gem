@@ -51,6 +51,14 @@ module Odania
 			@consul.config.get get_global_plugin_config_path
 		end
 
+		def set_subdomain_config(full_domain, config)
+			@consul.config.set get_subdomain_config_path(full_domain), config
+		end
+
+		def get_subdomain_config(full_domain)
+			@consul.config.get get_subdomain_config_path(full_domain)
+		end
+
 		def get_domain_config_for(domain, global_config=nil)
 			global_config = get_global_config if global_config.nil?
 
@@ -63,6 +71,10 @@ module Odania
 		end
 
 		private
+
+		def get_subdomain_config_path(full_domain)
+			"subdomain_config/#{full_domain}"
+		end
 
 		def get_global_plugin_config_path
 			'global_plugins_config'

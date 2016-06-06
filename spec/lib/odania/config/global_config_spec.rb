@@ -31,7 +31,7 @@ describe Odania::Config::GlobalConfig do
 			duplicates = subject.duplicates
 			expect(subject.duplicates).not_to be_empty
 			expect(duplicates).to have_key(:config)
-			expect(duplicates).to have_key(:partials)
+			expect(duplicates).to have_key(:assets)
 			expect(duplicates).to have_key(:redirect)
 		end
 

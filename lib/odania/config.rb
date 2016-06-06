@@ -9,6 +9,7 @@ require_relative 'config/sub_domain'
 require_relative 'config/style'
 require_relative 'config/backend'
 require_relative 'config/backend_group'
+require_relative 'config/subdomain_config'
 
 module Odania
 	module Config

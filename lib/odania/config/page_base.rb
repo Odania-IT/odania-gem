@@ -1,7 +1,7 @@
 module Odania
 	module Config
 		class PageBase
-			attr_accessor :assets, :partials
+			attr_accessor :assets
 
 			def initialize
 				reset
@@ -15,13 +15,6 @@ module Odania
 						self.assets[name].load(asset_data, group_name)
 					end
 				end
-
-				unless data['partials'].nil?
-					data['partials'].each_pair do |name, partial_data|
-						duplicates[:partials] << name if self.partials.key? name
-						self.partials[name].load(partial_data, group_name)
-					end
-				end
 				duplicates
 			end
 
@@ -31,15 +24,12 @@ module Odania
 
 			def reset
 				self.assets = Hash.new { |hash, key| hash[key] = Page.new }
-				self.partials = Hash.new { |hash, key| hash[key] = Page.new }
 
-				@plugins = {:partials => Hash.new { |hash, key| hash[key] = [] }, :assets => Hash.new { |hash, key| hash[key] = [] }}
+				@plugins = {:assets => Hash.new { |hash, key| hash[key] = [] }}
 			end
 
 			def [](type)
-				type = type.to_sym
-				return self.assets if :assets.eql? type
-				self.partials
+				self.assets
 			end
 
 			def dump
@@ -48,14 +38,8 @@ module Odania
 					asset_data[web_url] = page.dump
 				end
 
-				partial_data = {}
-				partials.each_pair do |web_url, page|
-					partial_data[web_url] = page.dump
-				end
-
 				{
-					'assets' => asset_data,
-					'partials' => partial_data
+					'assets' => asset_data
 				}
 			end
 		end

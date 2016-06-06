@@ -9,6 +9,7 @@ module Odania
 				@default_backend_groups = config['default_backend_groups'] unless config['default_backend_groups'].nil?
 				@valid_domains = config['valid_domains'] unless config['valid_domains'].nil?
 				@default_domains = config['default_domains'] unless config['default_domains'].nil?
+				@partials = config['partials'] unless config['partials'].nil?
 
 				unless config['domains'].nil?
 					config['domains'].each_pair do |name, data|
@@ -68,7 +69,22 @@ module Odania
 				config = self.dump
 				puts JSON.pretty_generate config if $debug
 				Odania.plugin.set_global_config config
+
+				generate_subdomain_configs config
+
 				config
+			end
+
+			# Generate a config per subdomain
+			def generate_subdomain_configs(config)
+				$logger.info 'Generating subdomain configs'
+				@valid_domains.each do |domain, subdomains|
+					subdomains.each do |subdomain|
+						$logger.info "Generating Subdomain Config for Domain: #{domain} Subdomain: #{subdomain}"
+						subdomain_config = SubdomainConfig.new(config, domain, subdomain).generate
+						Odania.plugin.set_subdomain_config "#{subdomain}.#{domain}", subdomain_config
+					end
+				end
 			end
 
 			# Add the configuration from the plugin
@@ -84,6 +100,7 @@ module Odania
 				@plugin_config[group_name] = plugin_cfg['plugin-config']
 				@valid_domains.deep_merge!(plugin_cfg['valid_domains']) unless plugin_cfg['valid_domains'].nil?
 				@default_domains.deep_merge!(plugin_cfg['default_domains']) unless plugin_cfg['default_domains'].nil?
+				@partials.deep_merge!(plugin_cfg['partials']) unless plugin_cfg['partials'].nil?
 
 				# Add this service as a default backend if specified
 				@default_backend_groups << group_name if plugin_cfg['plugin-config']['default']
@@ -126,6 +143,7 @@ module Odania
 				@backend_groups = Hash.new { |hash, key| hash[key] = BackendGroup.new(key) }
 				@valid_domains = {}
 				@default_domains = {}
+				@partials = {}
 
 				@domains['_general'].add_subdomain('_general')
 			end
@@ -153,6 +171,10 @@ module Odania
 				@default_domains
 			end
 
+			def partials
+				@partials
+			end
+
 			def default_redirects
 				general = @domains['_general'].subdomain('_general')
 				return {} if general.nil?
@@ -164,6 +186,7 @@ module Odania
 				cfg['default_backend_groups'] = @default_backend_groups
 				cfg['default_domains'] = @default_domains
 				cfg['valid_domains'] = @valid_domains
+				cfg['partials'] = @partials
 				cfg
 			end
 		end

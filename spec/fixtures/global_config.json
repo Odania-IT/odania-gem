@@ -40,15 +40,10 @@
 				"assets": {
 				},
 				"layouts": {
-				},
-				"partials": {
 				}
 			}
 		},
 		"example.com": {
-			"_general": {
-				"config": {}
-			},
 			"_general": {
 				"config": {
 				},
@@ -59,8 +54,7 @@
 					}
 				},
 				"assets": {},
-				"layouts": {},
-				"partials": {}
+				"layouts": {}
 			},
 			"www": {
 				"dynamic": {
@@ -126,21 +120,15 @@
 							}
 						}
 					}
-				},
-				"partials": {
-					"footer": {
-						"name": "footer",
-						"group_name": "static-content",
-						"plugin_url": "partials/footer.html",
-						"cacheable": true,
-						"expires": 60
-					},
-					"tracking": {
-						"name": "tracking",
-						"group_name": "static-content",
-						"plugin_url": "partials/tracking.html"
-					}
 				}
+			}
+		}
+	},
+	"partials": {
+		"example.com": {
+			"www": {
+				"tracking": "partials/tracking.html",
+				"footer": "partials/footer.html"
 			}
 		}
 	}
