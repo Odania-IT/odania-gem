@@ -87,6 +87,14 @@ module Odania
 				end
 			end
 
+			def write_valid_domain_config
+				config = {
+					valid_domains: @valid_domains,
+					default_domains: @default_domains
+				}
+				Odania.plugin.set_valid_domain_config config
+			end
+
 			# Add the configuration from the plugin
 			def add_plugin_config(plugin_cfg)
 				config_section = plugin_cfg['config']

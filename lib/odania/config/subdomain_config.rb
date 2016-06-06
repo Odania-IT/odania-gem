@@ -11,6 +11,9 @@ module Odania
 			def generate
 				@layout = get_layout_name
 				config = {
+					domain: @domain,
+					subdomain: @subdomain,
+					full_domain: "#{@subdomain}.#{@domain}",
 					layout: @layout,
 					config: generate_merged_config,
 					partials: generate_merged_partials
