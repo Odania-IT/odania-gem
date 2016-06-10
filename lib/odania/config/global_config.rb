@@ -71,6 +71,7 @@ module Odania
 				Odania.plugin.set_global_config config
 
 				generate_subdomain_configs config
+				write_valid_domain_config
 
 				config
 			end
@@ -88,6 +89,7 @@ module Odania
 			end
 
 			def write_valid_domain_config
+				$logger.info 'Writing valid domain config'
 				config = {
 					valid_domains: @valid_domains,
 					default_domains: @default_domains

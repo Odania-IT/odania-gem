@@ -15,8 +15,6 @@ LOCAL_TEST_MODE = 'development'.eql?(ENVIRONMENT) unless defined? LOCAL_TEST_MOD
 $logger = Logger.new(STDOUT)
 
 module Odania
-	CORE_PLUGIN_NAME = 'odania-core'
-
 	autoload :Config, 'odania/config'
 	autoload :Consul, 'odania/consul'
 	autoload :Plugin, 'odania/plugin'
