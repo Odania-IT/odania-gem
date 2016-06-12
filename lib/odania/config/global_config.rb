@@ -82,8 +82,14 @@ module Odania
 				@valid_domains.each do |domain, subdomains|
 					subdomains.each do |subdomain|
 						$logger.info "Generating Subdomain Config for Domain: #{domain} Subdomain: #{subdomain}"
-						subdomain_config = SubdomainConfig.new(config, domain, subdomain).generate
-						Odania.plugin.set_subdomain_config "#{subdomain}.#{domain}", subdomain_config
+
+						begin
+							subdomain_config = SubdomainConfig.new(config, domain, subdomain).generate
+							Odania.plugin.set_subdomain_config "#{subdomain}.#{domain}", subdomain_config
+						rescue => e
+							$logger.error "Error generating subdomain config: #{e}"
+							$logger.error e.backtrace.join("\n")
+						end
 					end
 				end
 			end
