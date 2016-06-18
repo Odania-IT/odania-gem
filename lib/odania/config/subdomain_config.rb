@@ -115,7 +115,7 @@ module Odania
 				key = path.shift
 
 				return nil until hash.has_key? key
-				return hash[key] if path.empty?
+				return hash[key].clone if path.empty?
 				retrieve_hash_path hash[key], path
 			end
 
