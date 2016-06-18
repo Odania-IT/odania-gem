@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    odania (0.0.39)
+    odania (0.1.0)
       deep_merge
       diplomat
       erubis
@@ -70,7 +70,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    public_suffix (2.0.1)
+    public_suffix (2.0.2)
     rake (10.5.0)
     rb-fsevent (0.9.7)
     rb-inotify (0.9.7)
