@@ -66,7 +66,8 @@ module Odania
 				result = retrieve_hash_path @global_config, ['domains', '_general', '_general', 'layouts', layout]
 				return result unless result.nil?
 
-				{}
+				$logger.error "Layout not found: #{layout}"
+				{'config' => {'styles' => {}}}
 			end
 
 			def generate_merged_config
