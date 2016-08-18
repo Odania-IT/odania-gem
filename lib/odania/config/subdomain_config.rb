@@ -6,6 +6,7 @@ module Odania
 				@global_config = global_config
 				@domain = domain
 				@subdomain = subdomain
+				@errors = []
 			end
 
 			def generate
@@ -22,6 +23,7 @@ module Odania
 				layout_config = get_layout_config @layout
 				layout_config.delete('assets')
 				config[:styles] = layout_config['config']['styles']
+				config[:errors] = @errors
 
 				if $debug
 					$logger.debug 'Generated config:'
@@ -67,6 +69,7 @@ module Odania
 				return result unless result.nil?
 
 				$logger.error "Layout not found: #{layout}"
+				@errors << "Layout not found: #{layout}"
 				{'config' => {'styles' => {}}}
 			end
 
