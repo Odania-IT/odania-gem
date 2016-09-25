@@ -75,8 +75,12 @@ module Odania
 			# TODO Is there an easier way to get the first service tagges with "core-backend"?
 			def get_core_service
 				core_backends = []
-				Diplomat::Service.get_all.each_pair do |key, tags|
-					core_backends << key if tags.include? 'core-backend'
+				begin
+					Diplomat::Service.get_all.each_pair do |key, tags|
+						core_backends << key if tags.include? 'core-backend'
+					end
+				rescue
+					$logger.warn 'No services in consul!'
 				end
 
 				get(core_backends.shuffle.first)

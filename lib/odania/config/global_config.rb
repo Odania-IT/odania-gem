@@ -63,7 +63,11 @@ module Odania
 
 			def generate_global_config
 				$logger.info 'Loading plugin configs from consul'
-				load_from_consul
+				begin
+					load_from_consul
+				rescue
+					$logger.warn 'No current configuration'
+				end
 
 				$logger.info 'Generating global config'
 				config = self.dump
