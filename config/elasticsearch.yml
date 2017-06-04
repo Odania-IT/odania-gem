@@ -1,0 +1,16 @@
+---
+development:
+  hosts: 127.0.0.1
+  user: elastic
+  password: changeme
+  scheme: http
+test:
+  hosts: 127.0.0.1
+  user: elastic
+  password: changeme
+  scheme: http
+production:
+  hosts: <%= ENV['ELASTICSEARCH_HOSTS'] %>
+  user: <%= ENV['ELASTICSEARCH_USER'] %>
+  password: <%= ENV['ELASTICSEARCH_PASSWORD'] %>
+  scheme: https

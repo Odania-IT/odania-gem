@@ -1,9 +1,19 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in odania.gemspec
+# Declare your gem's dependencies in odania.gemspec.
+# Bundler will treat runtime dependencies like base dependencies, and
+# development dependencies will be added by default to the :development group.
 gemspec
 
-group :development do
-	gem 'guard'
-	gem 'guard-rspec'
-end
+# Declare any dependencies that are still in development here instead of in
+# your gemspec. These might include edge Rails or gems from your path or
+# Git. Remember to move these dependencies to your gemspec before releasing
+# your gem to rubygems.org.
+
+# To use a debugger
+# gem 'byebug', group: [:development, :test]
+
+gem 'libv8', platforms: :ruby
+gem 'therubyracer', '>= 0.11.4', platforms: :ruby, require: 'v8'
+gem 'therubyrhino', '>= 0.11.4', platforms: :jruby
+gem 'puma', '~> 3.7'
